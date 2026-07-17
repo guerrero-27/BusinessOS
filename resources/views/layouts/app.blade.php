@@ -16,13 +16,18 @@
     </head>
     <body class="bg-gray-100">
         
-        <div class="flex">
+        <div class="flex min-h-screen">
 
             <x-sidebar/>
 
-            <main class="flex-1">
-                {{ $slot }}
-            </main>
+            <div class="flex flex-1 flex-col">
+                
+                <x-navbar/>
+
+                <main class="p-8">
+                    {{ $slot }}
+                </main>
+            </div>
             
         </div>
 

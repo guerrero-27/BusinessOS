@@ -8,11 +8,13 @@
 
     <nav class="px-4 space-y-2">
 
-        <a href="/dashboard" class="block rounded-lg px-4 py-3 hover:bg-indigo-50 hover:text-indigo-600">
+        <a href="{{ route('dashboard')}}" class="{{ request()->is('dashboard')
+            ? 'bg-indigo-600 text-white'
+            : 'hover:bg-indigo-50 hover:text-indigo-600'}} block rounded-lg px-4 py-3">
             Dashboard
         </a>
 
-        <a href="/customers" class="block rounded-lg px-4 py-3 hover:bg-indigo-50 hover:text-indigo-600">
+        <a href="{{ route('customers.index')}}" class="{{ request()->is('customers') ? 'bg-indigo-600 text-white' : 'hover:bg-indigo-50 hover:text-indigo-600'}} block rounded-lg px-4 py-3">
             Customers
         </a>
 
