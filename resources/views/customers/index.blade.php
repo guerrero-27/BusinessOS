@@ -1,23 +1,47 @@
 <x-app-layout>
+    @if (session('success'))
+        <div class="bg-green-100 text-green-800 px-4 py-3 rounded-lg mb-4">
+            {{ session('success')}}
+        </div>
+    @endif
 
-    <div class="flex items-center justify-between">
-
-        <div>
-            <h1 class="text-3xl font-bold">Customers</h1>
-
-            <p class="mt-2 text-gray-600">Manage all customer Records.</p>
+    <div class="max-w-6xl mx-auto py-8 px-4">
+        <div class="flex justify-between items-center mb-6">
+            <h1 class="text-2xl font-bold text-gray-800">Customers</h1>
+            <a href="{{ route('customers.create')}}" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition">
+                + Add Customer
+            </a>
         </div>
 
-        <x-button>
-            + Add Customer
-        </x-button>
-
+        <div class="bg-white shadow rounded-lg overflow-hidden">
+            <table class="w-full text-left border-collapse">
+                <thead class="bg-gray-100 text-gray-600  text-sm uppercase">
+                    <tr>
+                        <th class="px-4 py-3">#</th>
+                        <th class="px-4 py-3">Name</th>
+                        <th class="px-4 py-3">Email</th>
+                        <th class="px-4 py-3"></th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-100">
+                    @forelse ($customers as $customer)
+                        <tr class="{{$loop->even ? 'bg-gray50' : 'bg-white'}} hover:bg-blue-50 transition">
+                            <td class="px-4 py-3">{{ $loop->iteration }}</td>
+                            <td class="px-4 py-3">{{$customer->first_name}}</td>
+                            <td class="px-4 py-3">{{$customer->email}}</td>
+                            <td class="px-4 py-3 text-right">
+                                <a href="{{ route('customers.edit', $customer)}}" class="text-blue-600 hover:underline">Edit</a>
+                            </td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="4" class="text-center text-gray-500 py-6">
+                                No customers yet. <a href="{{ route('customers.create')}}" class="text-blue-600 underline">Add your first one</a>
+                            </td>
+                        </tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
     </div>
-
-    <div class="mt-8">
-        <x-card>
-            No Customers Found.
-        </x-card>
-    </div>
-
 </x-app-layout>

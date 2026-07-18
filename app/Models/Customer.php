@@ -19,4 +19,12 @@ class Customer extends Model
         'gender',
         'is_active',
     ];
+
+    protected function casts(): array
+    {
+        return [
+            'birth_date' => 'date',
+            'is_active' => 'boolean',
+        ];
+    }
 }

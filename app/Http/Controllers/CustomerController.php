@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Customer;
 
 class CustomerController extends Controller
 {
@@ -11,7 +12,8 @@ class CustomerController extends Controller
      */
     public function index()
     {
-        return view('customers.index');
+        $customers = Customer::all();
+        return view('customers.index', compact('customers'));
     }
 
     /**
@@ -19,7 +21,7 @@ class CustomerController extends Controller
      */
     public function create()
     {
-        //
+        return view('customers.create');
     }
 
     /**
@@ -27,7 +29,20 @@ class CustomerController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'first_name' => 'required|string|max:255',
+            'last_name' => 'required|string|max:255',
+            'email' => 'required|email|unique:customers,email',
+            'phone' => 'nullable|string|max:20',
+            'address' => 'nullable|string|max:500',
+            'birth_date' => 'nullable|date|before:today',
+            'gender' => 'nullable|in:male,female,other',
+            'is_active' => 'boolean',
+        ]);
+
+        Customer::create($validated);
+
+        return redirect()->route('customers.index')->with('success', 'Customer added successfully.');
     }
 
     /**
@@ -41,17 +56,30 @@ class CustomerController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Customer $customer)
     {
-        //
+        return view('customers.edit', compact('customer'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Customer $customer)
     {
-        //
+        $validated = $request->validate([
+            'first_name' => 'required|string|max:255',
+            'last_name' => 'required|string|max:255',
+            'email' => 'required|email|unique:customers,email,' . $customer->id,
+            'phone' => 'nullable|string|max:20',
+            'address' => 'nullable|string|max:500',
+            'birth_date' => 'nullable|date|before:today',
+            'gender' => 'nullable|in:male,female,other',
+            'is_active' => 'boolean',
+        ]);
+
+        $customer->update($validated);
+
+        return redirect()->route('customers.index')->with('success', 'Cusromer Updated successfully.');
     }
 
     /**
