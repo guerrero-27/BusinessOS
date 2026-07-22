@@ -8,9 +8,18 @@
     <div class="max-w-6xl mx-auto py-8 px-4">
         <div class="flex justify-between items-center mb-6">
             <h1 class="text-2xl font-bold text-gray-800">Customers</h1>
-            <a href="{{ route('customers.create')}}" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition">
+            <div class="flex justify-between items-center gap-3">
+
+                <form action="{{ route('customers.index')}}" method="GET">
+                    <input type="text" name="search" value=" {{ request('search')}}" placeholder="Search by Name..." class="border-gray-300 rounded-lg shadow-sm w-64">
+                    <button type="sumbmit" class="bg-gray-200 px-4 py-2 rounded-lg">Search</button>
+                </form>
+
+                <a href="{{ route('customers.create')}}" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition">
                 + Add Customer
-            </a>
+                </a>
+            </div>
+            
         </div>
 
         <div class="bg-white shadow rounded-lg overflow-hidden">
@@ -29,9 +38,17 @@
                             <td class="px-4 py-3">{{ $loop->iteration }}</td>
                             <td class="px-4 py-3">{{$customer->first_name}}</td>
                             <td class="px-4 py-3">{{$customer->email}}</td>
-                            <td class="px-4 py-3 text-right">
+                            <td class="px-4 py-3 text-right gap-5">
                                 <a href="{{ route('customers.edit', $customer)}}" class="text-blue-600 hover:underline">Edit</a>
+
+                                <form action="{{ route('customers.destroy', $customer)}}" method="POST" onsubmit="return confirm('Remove this customer?');" class="inline">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="text-red-600 hover:underline">Delete</button>
+                                </form>
                             </td>
+
+                            
                         </tr>
                     @empty
                         <tr>
