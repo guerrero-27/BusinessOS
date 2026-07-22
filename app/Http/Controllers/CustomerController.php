@@ -17,7 +17,7 @@ class CustomerController extends Controller
         $customers = Customer::when($request->search, function($query, $search){
             $query->where('first_name', 'like', "%{$search}%")
                 ->orWhere('last_name', 'like', "%{$search}%");
-        })->latest()->get();
+        })->latest()->paginate(15);
         return view('customers.index', compact('customers'));
     }
 
@@ -59,7 +59,7 @@ class CustomerController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateCustomerRequest $request)
+    public function update(UpdateCustomerRequest $request, Customer $customer)
     {
         $customer->update($request->validated());
 

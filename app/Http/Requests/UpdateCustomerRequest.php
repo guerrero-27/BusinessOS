@@ -13,7 +13,9 @@ class UpdateCustomerRequest extends FormRequest
 
     public function rules(): array
     {
-        $customerId = $this->route('customer')->id;
+        $customerId = $this->route('customer') instanceof \App\Models\Customer
+            ? $this->route('customer')->id
+            : $this->route('customer');
 
         return [
             'first_name' => 'required|string|max:255',
