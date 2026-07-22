@@ -11,7 +11,14 @@ Route::get('/', function () {
 Route::resource('customers', CustomerController::class);
 
 Route::get('/dashboard', function () {
-    return view('dashboard');
+    $stats = [
+        'total'    => \App\Models\Customer::count(),
+        'active'   => \App\Models\Customer::where('is_active', true)->count(),
+        'inactive' => \App\Models\Customer::where('is_active', false)->count(),
+        'new'      => \App\Models\Customer::whereMonth('created_at', now()->month)->count(),
+    ];
+    $recent = \App\Models\Customer::latest()->take(5)->get();
+    return view('dashboard', compact('stats', 'recent'));
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
