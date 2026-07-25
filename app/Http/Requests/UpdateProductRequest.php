@@ -3,6 +3,8 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Contracts\Validation\Validator;
+use Illuminate\Validation\ValidationException;
 
 class UpdateProductRequest extends FormRequest
 {
@@ -30,5 +32,16 @@ class UpdateProductRequest extends FormRequest
             'warehouse'     => 'nullable|string|max:255',
             'status'        => 'required|in:active,inactive,draft,archived',
         ];
+    }
+
+    protected function failedValidation(Validator $validator)
+    {
+        $product = $this->route('product');
+        $id = $product instanceof \App\Models\Product ? $product->id : $product;
+        session()->flash('edit_product_id', $id);
+
+        throw (new ValidationException($validator))
+            ->errorBag($this->errorBag)
+            ->redirectTo($this->getRedirectUrl());
     }
 }

@@ -5,6 +5,25 @@
         </div>
     @endif
 
+    @php
+        $statusColors = [
+            'active'   => 'bg-green-50 text-green-700 border-green-200',
+            'inactive' => 'bg-gray-100 text-gray-500 border-gray-200',
+            'draft'    => 'bg-blue-50 text-blue-600 border-blue-200',
+            'archived' => 'bg-orange-50 text-orange-600 border-orange-200',
+        ];
+        $stockColors = [
+            'in_stock'     => 'bg-green-50 text-green-700 border-green-200',
+            'low_stock'    => 'bg-yellow-50 text-yellow-700 border-yellow-200',
+            'out_of_stock' => 'bg-red-50 text-red-700 border-red-200',
+        ];
+        $stockLabels = [
+            'in_stock'     => 'In Stock',
+            'low_stock'    => 'Low Stock',
+            'out_of_stock' => 'Out of Stock',
+        ];
+    @endphp
+
     {{-- Stats --}}
     <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6">
         <div class="bg-white border border-gray-200 rounded-lg p-4 shadow-sm">
@@ -43,10 +62,9 @@
 
                 <select name="status" class="border-gray-300 rounded-lg shadow-sm text-sm focus:ring-indigo-500 focus:border-indigo-500">
                     <option value="">All Status</option>
-                    <option value="active" @selected(request('status') === 'active')>Active</option>
-                    <option value="inactive" @selected(request('status') === 'inactive')>Inactive</option>
-                    <option value="draft" @selected(request('status') === 'draft')>Draft</option>
-                    <option value="archived" @selected(request('status') === 'archived')>Archived</option>
+                    @foreach (['active', 'inactive', 'draft', 'archived'] as $s)
+                        <option value="{{ $s }}" @selected(request('status') === $s)>{{ ucfirst($s) }}</option>
+                    @endforeach
                 </select>
 
                 <select name="stock_status" class="border-gray-300 rounded-lg shadow-sm text-sm focus:ring-indigo-500 focus:border-indigo-500">
@@ -89,6 +107,7 @@
                 </thead>
                 <tbody class="divide-y divide-gray-100">
                     @forelse ($products as $product)
+                        @php $stockStatus = $product->stockStatusLabel(); @endphp
                         <tr class="hover:bg-gray-50 transition">
                             <td class="px-5 py-3 text-gray-400">{{ $loop->iteration }}</td>
                             <td class="px-5 py-3 font-medium text-gray-800">
@@ -105,21 +124,12 @@
                             <td class="px-5 py-3 text-gray-600">{{ $product->category?->name ?? '—' }}</td>
                             <td class="px-5 py-3 text-gray-800">₱{{ number_format($product->selling_price, 2) }}</td>
                             <td class="px-5 py-3">
-                                @php $stockLabel = $product->stockStatusLabel(); @endphp
-                                <span class="inline-flex items-center gap-1 text-xs font-medium px-2 py-0.5 rounded-full border
-                                    {{ $stockLabel === 'in_stock' ? 'bg-green-50 text-green-700 border-green-200' : ($stockLabel === 'low_stock' ? 'bg-yellow-50 text-yellow-700 border-yellow-200' : 'bg-red-50 text-red-700 border-red-200') }}">
+                                <span class="inline-flex items-center gap-1 text-xs font-medium px-2 py-0.5 rounded-full border {{ $stockColors[$stockStatus] }}">
                                     {{ $product->current_stock }} {{ $product->unit }}
+                                    <span class="opacity-60">· {{ $stockLabels[$stockStatus] }}</span>
                                 </span>
                             </td>
                             <td class="px-5 py-3">
-                                @php
-                                    $statusColors = [
-                                        'active'   => 'bg-green-50 text-green-700 border-green-200',
-                                        'inactive' => 'bg-gray-100 text-gray-500 border-gray-200',
-                                        'draft'    => 'bg-blue-50 text-blue-600 border-blue-200',
-                                        'archived' => 'bg-orange-50 text-orange-600 border-orange-200',
-                                    ];
-                                @endphp
                                 <span class="inline-block px-2 py-0.5 text-xs font-medium border rounded-full {{ $statusColors[$product->status] ?? '' }}">
                                     {{ ucfirst($product->status) }}
                                 </span>
@@ -151,16 +161,27 @@
         {{-- Mobile --}}
         <div class="sm:hidden divide-y divide-gray-100">
             @forelse ($products as $product)
+                @php $stockStatus = $product->stockStatusLabel(); @endphp
                 <div class="px-4 py-4">
                     <div class="flex items-start justify-between gap-2">
-                        <div>
-                            <p class="font-medium text-gray-800 text-sm">{{ $product->name }}</p>
-                            <p class="text-gray-400 text-xs font-mono mt-0.5">{{ $product->sku }}</p>
-                            <p class="text-gray-600 text-xs mt-0.5">₱{{ number_format($product->selling_price, 2) }} · {{ $product->current_stock }} {{ $product->unit }}</p>
+                        <div class="flex items-center gap-2">
+                            @if ($product->image)
+                                <img src="{{ Storage::url($product->image) }}" class="w-10 h-10 rounded object-cover shrink-0">
+                            @endif
+                            <div>
+                                <p class="font-medium text-gray-800 text-sm">{{ $product->name }}</p>
+                                <p class="text-gray-400 text-xs font-mono mt-0.5">{{ $product->sku }}</p>
+                                <p class="text-gray-600 text-xs mt-0.5">₱{{ number_format($product->selling_price, 2) }}</p>
+                            </div>
                         </div>
-                        <span class="inline-block px-2 py-0.5 text-xs font-medium border rounded-full {{ $statusColors[$product->status] ?? '' }}">
-                            {{ ucfirst($product->status) }}
-                        </span>
+                        <div class="flex flex-col items-end gap-1 shrink-0">
+                            <span class="inline-block px-2 py-0.5 text-xs font-medium border rounded-full {{ $statusColors[$product->status] ?? '' }}">
+                                {{ ucfirst($product->status) }}
+                            </span>
+                            <span class="inline-block px-2 py-0.5 text-xs font-medium border rounded-full {{ $stockColors[$stockStatus] }}">
+                                {{ $product->current_stock }} {{ $product->unit }}
+                            </span>
+                        </div>
                     </div>
                     <div class="flex gap-4 mt-3">
                         <button onclick="openEdit({{ $product->id }})" class="text-indigo-600 text-sm font-medium">Edit</button>
@@ -187,7 +208,7 @@
         <div class="bg-white rounded-xl shadow-xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
             <div class="flex items-center justify-between px-6 py-4 border-b border-gray-100">
                 <h2 class="text-base font-semibold text-gray-800">Add Product</h2>
-                <button onclick="document.getElementById('modal-create').classList.add('hidden')" class="text-gray-400 hover:text-gray-600">✕</button>
+                <button onclick="document.getElementById('modal-create').classList.add('hidden')" class="text-gray-400 hover:text-gray-600 text-lg leading-none">✕</button>
             </div>
             <form action="{{ route('products.store') }}" method="POST" enctype="multipart/form-data" class="p-6 space-y-4">
                 @csrf
@@ -208,8 +229,8 @@
         <div id="modal-edit-{{ $product->id }}" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4">
             <div class="bg-white rounded-xl shadow-xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
                 <div class="flex items-center justify-between px-6 py-4 border-b border-gray-100">
-                    <h2 class="text-base font-semibold text-gray-800">Edit Product</h2>
-                    <button onclick="document.getElementById('modal-edit-{{ $product->id }}').classList.add('hidden')" class="text-gray-400 hover:text-gray-600">✕</button>
+                    <h2 class="text-base font-semibold text-gray-800">Edit: {{ $product->name }}</h2>
+                    <button onclick="document.getElementById('modal-edit-{{ $product->id }}').classList.add('hidden')" class="text-gray-400 hover:text-gray-600 text-lg leading-none">✕</button>
                 </div>
                 <form action="{{ route('products.update', $product) }}" method="POST" enctype="multipart/form-data" class="p-6 space-y-4">
                     @csrf
@@ -227,17 +248,17 @@
         </div>
     @endforeach
 
-    @if ($errors->any())
-        <script>
-            document.addEventListener('DOMContentLoaded', function () {
-                document.getElementById('modal-create').classList.remove('hidden');
-            });
-        </script>
-    @endif
-
     <script>
         function openEdit(id) {
             document.getElementById('modal-edit-' + id).classList.remove('hidden');
         }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            @if ($errors->any() && session('edit_product_id'))
+                openEdit({{ session('edit_product_id') }});
+            @elseif ($errors->any())
+                document.getElementById('modal-create').classList.remove('hidden');
+            @endif
+        });
     </script>
 </x-app-layout>

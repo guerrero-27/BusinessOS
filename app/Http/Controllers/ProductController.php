@@ -95,8 +95,7 @@ class ProductController extends Controller
 
     public function edit(Product $product)
     {
-        $categories = Category::where('is_active', true)->orderBy('name')->get();
-        return view('products.edit', compact('product', 'categories'));
+        return redirect()->route('products.index');
     }
 
     public function update(UpdateProductRequest $request, Product $product)
