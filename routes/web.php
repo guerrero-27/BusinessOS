@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\CategoryController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -11,6 +12,7 @@ Route::get('/', function () {
 
 Route::resource('customers', CustomerController::class);
 Route::resource('products', ProductController::class)->except(['show', 'create', 'edit']);
+Route::resource('categories', CategoryController::class)->except(['show', 'create', 'edit']);
 
 Route::get('/dashboard', function () {
     $customerStats = [

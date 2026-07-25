@@ -18,8 +18,12 @@
             Customers
         </a>
 
-        <a href="/products" class="block rounded-lg px-4 py-3 hover:bg-indigo-50 hover:text-indigo-600">
+        <a href="{{ route('products.index') }}" class="{{ request()->is('products*') ? 'bg-indigo-600 text-white' : 'hover:bg-indigo-50 hover:text-indigo-600' }} block rounded-lg px-4 py-3">
             Products
+        </a>
+
+        <a href="{{ route('categories.index') }}" class="{{ request()->is('categories*') ? 'bg-indigo-600 text-white' : 'hover:bg-indigo-50 hover:text-indigo-600' }} block rounded-lg px-4 py-3">
+            Categories
         </a>
 
         <a href="/inventory" class="block rounded-lg px-4 py-3 hover:bg-indigo-50 hover:text-indigo-600">
