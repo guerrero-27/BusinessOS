@@ -82,7 +82,7 @@
                 @endif
             </form>
 
-            <button onclick="document.getElementById('modal-create').classList.remove('hidden')"
+            <button onclick="openCreate()"
                 class="inline-flex items-center justify-center gap-1 bg-indigo-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-indigo-700 transition whitespace-nowrap">
                 + Add Product
             </button>
@@ -249,6 +249,19 @@
     @endforeach
 
     <script>
+        function openCreate() {
+            const modal = document.getElementById('modal-create');
+            modal.querySelector('form').reset();
+            // restore select defaults
+            modal.querySelector('[name="status"]').value = 'active';
+            modal.querySelector('[name="unit"]').value = 'pcs';
+            modal.querySelector('[name="current_stock"]').value = '0';
+            modal.querySelector('[name="min_stock"]').value = '0';
+            modal.querySelector('[name="max_stock"]').value = '';
+            modal.querySelector('[name="category_id"]').value = '';
+            modal.classList.remove('hidden');
+        }
+
         function openEdit(id) {
             document.getElementById('modal-edit-' + id).classList.remove('hidden');
         }
