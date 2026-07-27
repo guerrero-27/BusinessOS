@@ -110,9 +110,13 @@
                                         {{ $stockLabels[$ss] }}
                                     </span>
                                 </td>
-                                <td class="px-5 py-3 text-right">
-                                    <button onclick="openAdjust({{ $product->id }}, '{{ addslashes($product->name) }}', {{ $product->current_stock }})"
-                                        class="text-indigo-600 hover:text-indigo-800 text-sm font-medium">Adjust</button>
+                                                <td class="px-5 py-3 text-right">
+                                    <div class="flex justify-end items-center gap-3">
+                                        <a href="{{ route('inventory.barcode', $product) }}" target="_blank"
+                                            class="text-gray-400 hover:text-gray-600 text-sm font-medium">Label</a>
+                                        <button onclick="openAdjust({{ $product->id }}, '{{ addslashes($product->name) }}', {{ $product->current_stock }})"
+                                            class="text-indigo-600 hover:text-indigo-800 text-sm font-medium">Adjust</button>
+                                    </div>
                                 </td>
                             </tr>
                         @empty
@@ -163,12 +167,13 @@
         <div class="mb-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
             <h2 class="text-base font-semibold text-gray-800">Movement History</h2>
             <form action="{{ route('inventory.index') }}" method="GET" class="flex flex-wrap gap-2">
-                {{-- preserve stock filters --}}
                 @foreach (['search', 'category', 'stock_status'] as $f)
                     @if (request($f))
                         <input type="hidden" name="{{ $f }}" value="{{ request($f) }}">
                     @endif
                 @endforeach
+                <input type="text" name="ref_search" value="{{ request('ref_search') }}" placeholder="Search ref # (e.g. PO-2026-0001)"
+                    class="w-52 border-gray-300 rounded-lg shadow-sm text-sm text-gray-900 focus:ring-indigo-500 focus:border-indigo-500">
                 <select name="movement_type" class="border-gray-300 rounded-lg shadow-sm text-sm focus:ring-indigo-500 focus:border-indigo-500">
                     <option value="">All Types</option>
                     <option value="in" @selected(request('movement_type') === 'in')>Stock In</option>
@@ -176,6 +181,9 @@
                     <option value="adjustment" @selected(request('movement_type') === 'adjustment')>Adjustment</option>
                 </select>
                 <button type="submit" class="px-3 py-2 bg-gray-100 border border-gray-300 rounded-lg text-sm text-gray-700 hover:bg-gray-200 transition">Filter</button>
+                @if (request()->hasAny(['ref_search', 'movement_type']))
+                    <a href="{{ route('inventory.index') }}" class="px-3 py-2 text-sm text-gray-500 hover:text-gray-700">Clear</a>
+                @endif
             </form>
         </div>
 
@@ -209,7 +217,16 @@
                                 </td>
                                 <td class="px-5 py-3 text-gray-500 text-xs">{{ $m->stock_before }} → {{ $m->stock_after }}</td>
                                 <td class="px-5 py-3 text-gray-500">{{ $m->reason ?? '—' }}</td>
-                                <td class="px-5 py-3 text-gray-400 font-mono text-xs">{{ $m->reference ?? '—' }}</td>
+                                <td class="px-5 py-3">
+                                    @if ($m->reference_number)
+                                        <span class="inline-block font-mono text-xs px-2 py-0.5 rounded border
+                                            {{ str_starts_with($m->reference_number, 'PO') ? 'bg-green-50 text-green-700 border-green-200' : (str_starts_with($m->reference_number, 'INV') ? 'bg-red-50 text-red-700 border-red-200' : 'bg-blue-50 text-blue-700 border-blue-200') }}">
+                                            {{ $m->reference_number }}
+                                        </span>
+                                    @else
+                                        <span class="text-gray-400 text-xs">—</span>
+                                    @endif
+                                </td>
                                 <td class="px-5 py-3 text-gray-500">{{ $m->user?->name ?? 'System' }}</td>
                             </tr>
                         @empty
@@ -304,17 +321,20 @@
                 </div>
 
                 <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Reason</label>
-                    <input type="text" name="reason" value="{{ old('reason') }}" placeholder="e.g. Purchase delivery, Damaged goods..."
-                        class="w-full border-gray-300 rounded-lg shadow-sm text-sm focus:ring-indigo-500 focus:border-indigo-500">
-                    @error('reason') <p class="text-xs text-red-600 mt-1">{{ $message }}</p> @enderror
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Reference #</label>
+                    <div class="flex items-center gap-2 px-3 py-2 bg-gray-50 border border-dashed border-gray-300 rounded-lg">
+                        <svg class="w-4 h-4 text-gray-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 20l4-16m2 16l4-16M6 9h14M4 15h14"/>
+                        </svg>
+                        <span class="text-sm text-gray-400 italic" id="adj-ref-preview">Auto-generated on save</span>
+                    </div>
                 </div>
 
                 <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Reference #</label>
-                    <input type="text" name="reference" value="{{ old('reference') }}" placeholder="PO#, Invoice#..."
-                        class="w-full border-gray-300 rounded-lg shadow-sm text-sm focus:ring-indigo-500 focus:border-indigo-500">
-                    @error('reference') <p class="text-xs text-red-600 mt-1">{{ $message }}</p> @enderror
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Reason</label>
+                    <input type="text" name="reason" value="{{ old('reason') }}" placeholder="e.g. Purchase delivery, Damaged goods..."
+                        class="w-full border-gray-300 rounded-lg shadow-sm text-sm text-gray-900 focus:ring-indigo-500 focus:border-indigo-500">
+                    @error('reason') <p class="text-xs text-red-600 mt-1">{{ $message }}</p> @enderror
                 </div>
 
                 <div class="flex justify-end gap-3 pt-2 border-t border-gray-100">
@@ -333,6 +353,7 @@
             const select = document.getElementById('adj-product');
             select.value = productId;
             updateCurrentStock();
+            updateRefPreview();
             modal.classList.remove('hidden');
         }
 
@@ -353,7 +374,18 @@
             }
         }
 
+        function updateRefPreview() {
+            const type = document.querySelector('input[name="type"]:checked')?.value || 'in';
+            const prefixes = { in: 'PO', out: 'INV', adjustment: 'ADJ' };
+            const year = new Date().getFullYear();
+            document.getElementById('adj-ref-preview').textContent =
+                (prefixes[type] || 'REF') + '-' + year + '-XXXX (auto)';
+        }
+
+        document.querySelectorAll('input[name="type"]').forEach(r => r.addEventListener('change', updateRefPreview));
+
         document.addEventListener('DOMContentLoaded', function () {
+            updateRefPreview();
             @if ($errors->any())
                 document.getElementById('modal-adjust').classList.remove('hidden');
             @endif

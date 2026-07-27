@@ -16,6 +16,7 @@ Route::resource('products', ProductController::class)->except(['show', 'create',
 Route::resource('categories', CategoryController::class)->except(['show', 'create', 'edit']);
 Route::get('/inventory', [InventoryController::class, 'index'])->name('inventory.index');
 Route::post('/inventory', [InventoryController::class, 'store'])->name('inventory.store');
+Route::get('/inventory/barcode/{product}', [InventoryController::class, 'barcodeLabel'])->name('inventory.barcode');
 
 Route::get('/dashboard', function () {
     $customerStats = [

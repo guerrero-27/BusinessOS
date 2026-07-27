@@ -7,7 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 class InventoryMovement extends Model
 {
     protected $fillable = [
-        'product_id', 'type', 'quantity', 'stock_before', 'stock_after', 'reason', 'reference', 'user_id',
+        'product_id', 'type', 'quantity', 'stock_before', 'stock_after',
+        'reason', 'reference', 'reference_number', 'user_id',
     ];
 
     public function product()

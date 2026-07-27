@@ -15,7 +15,6 @@ class StoreInventoryMovementRequest extends FormRequest
             'type'       => 'required|in:in,out,adjustment',
             'quantity'   => 'required|integer|min:1',
             'reason'     => 'nullable|string|max:255',
-            'reference'  => 'nullable|string|max:255',
         ];
     }
 }

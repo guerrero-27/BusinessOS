@@ -138,12 +138,8 @@
                                 <div class="flex justify-end items-center gap-3">
                                     <button onclick="openEdit({{ $product->id }})"
                                         class="text-indigo-600 hover:text-indigo-800 text-sm font-medium">Edit</button>
-                                    <form action="{{ route('products.destroy', $product) }}" method="POST"
-                                        onsubmit="return confirm('Delete this product?');" class="inline">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="text-red-500 hover:text-red-700 text-sm font-medium">Delete</button>
-                                    </form>
+                                    <button onclick="openDelete({{ $product->id }}, '{{ addslashes($product->name) }}')"
+                                        class="text-red-500 hover:text-red-700 text-sm font-medium">Delete</button>
                                 </div>
                             </td>
                         </tr>
@@ -185,12 +181,7 @@
                     </div>
                     <div class="flex gap-4 mt-3">
                         <button onclick="openEdit({{ $product->id }})" class="text-indigo-600 text-sm font-medium">Edit</button>
-                        <form action="{{ route('products.destroy', $product) }}" method="POST"
-                            onsubmit="return confirm('Delete this product?');" class="inline">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="text-red-500 text-sm font-medium">Delete</button>
-                        </form>
+                        <button onclick="openDelete({{ $product->id }}, '{{ addslashes($product->name) }}')" class="text-red-500 text-sm font-medium">Delete</button>
                     </div>
                 </div>
             @empty
@@ -221,6 +212,31 @@
                     </button>
                 </div>
             </form>
+        </div>
+    </div>
+
+    {{-- Delete Confirm Modal --}}
+    <div id="modal-delete" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4">
+        <div class="bg-white rounded-xl shadow-xl w-full max-w-sm">
+            <div class="p-6">
+                <div class="flex items-center justify-center w-12 h-12 rounded-full bg-red-50 mx-auto mb-4">
+                    <svg class="w-6 h-6 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                    </svg>
+                </div>
+                <h3 class="text-base font-semibold text-gray-800 text-center">Delete Product</h3>
+                <p class="text-sm text-gray-500 text-center mt-1">
+                    Are you sure you want to delete <span id="delete-product-name" class="font-medium text-gray-800"></span>? This action cannot be undone.
+                </p>
+            </div>
+            <div class="flex gap-3 px-6 pb-6">
+                <button onclick="closeDelete()" class="flex-1 px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-lg transition">Cancel</button>
+                <form id="delete-form" method="POST" class="flex-1">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" class="w-full px-4 py-2 text-sm font-medium text-white bg-red-600 hover:bg-red-700 rounded-lg transition">Delete</button>
+                </form>
+            </div>
         </div>
     </div>
 
@@ -260,6 +276,16 @@
             modal.querySelector('[name="max_stock"]').value = '';
             modal.querySelector('[name="category_id"]').value = '';
             modal.classList.remove('hidden');
+        }
+
+        function openDelete(id, name) {
+            document.getElementById('delete-product-name').textContent = name;
+            document.getElementById('delete-form').action = '/products/' + id;
+            document.getElementById('modal-delete').classList.remove('hidden');
+        }
+
+        function closeDelete() {
+            document.getElementById('modal-delete').classList.add('hidden');
         }
 
         function openEdit(id) {
