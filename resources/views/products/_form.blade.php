@@ -9,10 +9,36 @@
     </div>
 
     <div>
-        <label class="block text-sm font-medium text-gray-700 mb-1">SKU <span class="text-red-500">*</span></label>
-        <input type="text" name="sku" value="{{ old('sku', $p?->sku) }}"
-            class="w-full border-gray-300 rounded-lg shadow-sm text-sm text-gray-900 focus:ring-indigo-500 focus:border-indigo-500">
-        @error('sku') <p class="text-xs text-red-600 mt-1">{{ $message }}</p> @enderror
+        <label class="block text-sm font-medium text-gray-700 mb-1">Brand</label>
+        <input type="text" name="brand" id="field-brand-{{ $p?->id ?? 'new' }}"
+            value="{{ old('brand', $p?->brand) }}"
+            placeholder="e.g. Lenovo, Samsung, Generic..."
+            class="w-full border-gray-300 rounded-lg shadow-sm text-sm text-gray-900 focus:ring-indigo-500 focus:border-indigo-500 sku-trigger"
+            data-form-id="{{ $p?->id ?? 'new' }}">
+        @error('brand') <p class="text-xs text-red-600 mt-1">{{ $message }}</p> @enderror
+    </div>
+
+    <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">SKU</label>
+        @if ($p)
+            {{-- Existing product: show locked SKU --}}
+            <div class="flex items-center gap-2 px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg">
+                <svg class="w-4 h-4 text-gray-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 20l4-16m2 16l4-16M6 9h14M4 15h14"/>
+                </svg>
+                <span class="text-sm font-mono font-semibold text-gray-700">{{ $p->sku }}</span>
+                <span class="ml-auto text-xs text-gray-400 bg-gray-100 px-2 py-0.5 rounded-full">Locked</span>
+            </div>
+        @else
+            {{-- New product: show live preview --}}
+            <div id="sku-preview-new" class="flex items-center gap-2 px-3 py-2 bg-indigo-50 border border-dashed border-indigo-200 rounded-lg transition-all">
+                <svg class="w-4 h-4 text-indigo-300 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 20l4-16m2 16l4-16M6 9h14M4 15h14"/>
+                </svg>
+                <span id="sku-preview-text-new" class="text-sm font-mono text-indigo-400 italic">Select category &amp; brand to preview</span>
+                <span class="ml-auto text-xs text-indigo-400 bg-indigo-100 px-2 py-0.5 rounded-full">Auto</span>
+            </div>
+        @endif
     </div>
 
     <div>
@@ -38,7 +64,9 @@
 
     <div>
         <label class="block text-sm font-medium text-gray-700 mb-1">Category</label>
-        <select name="category_id" class="w-full border-gray-300 rounded-lg shadow-sm text-sm text-gray-900 focus:ring-indigo-500 focus:border-indigo-500">
+        <select name="category_id" id="field-category-{{ $p?->id ?? 'new' }}"
+            class="w-full border-gray-300 rounded-lg shadow-sm text-sm text-gray-900 focus:ring-indigo-500 focus:border-indigo-500 sku-trigger"
+            data-form-id="{{ $p?->id ?? 'new' }}">
             <option value="">— None —</option>
             @foreach ($categories as $cat)
                 <option value="{{ $cat->id }}" @selected(old('category_id', $p?->category_id) == $cat->id)>{{ $cat->name }}</option>
@@ -123,3 +151,53 @@
         class="w-full text-sm text-gray-600 file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-sm file:bg-gray-100 file:text-gray-700 hover:file:bg-gray-200">
     @error('image') <p class="text-xs text-red-600 mt-1">{{ $message }}</p> @enderror
 </div>
+
+@once
+<script>
+(function () {
+    let debounceTimer = null;
+
+    function updateSkuPreview(formId) {
+        const categoryEl = document.getElementById('field-category-' + formId);
+        const brandEl    = document.getElementById('field-brand-' + formId);
+        const previewEl  = document.getElementById('sku-preview-text-' + formId);
+
+        if (!categoryEl || !brandEl || !previewEl) return;
+
+        const categoryId = categoryEl.value;
+        const brand      = brandEl.value.trim();
+
+        if (!categoryId && !brand) {
+            previewEl.textContent = 'Select category & brand to preview';
+            previewEl.className = 'text-sm font-mono text-indigo-400 italic';
+            return;
+        }
+
+        clearTimeout(debounceTimer);
+        debounceTimer = setTimeout(() => {
+            const params = new URLSearchParams({ category_id: categoryId, brand });
+            fetch('{{ route('products.sku-preview') }}?' + params, {
+                headers: { 'X-Requested-With': 'XMLHttpRequest' }
+            })
+            .then(r => r.json())
+            .then(data => {
+                previewEl.textContent = data.preview;
+                previewEl.className = 'text-sm font-mono font-semibold text-indigo-600';
+            });
+        }, 300);
+    }
+
+    document.addEventListener('change', function (e) {
+        if (e.target.classList.contains('sku-trigger')) {
+            updateSkuPreview(e.target.dataset.formId);
+        }
+    });
+
+    document.addEventListener('input', function (e) {
+        if (e.target.classList.contains('sku-trigger')) {
+            updateSkuPreview(e.target.dataset.formId);
+        }
+    });
+})();
+</script>
+@endonce

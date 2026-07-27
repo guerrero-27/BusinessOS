@@ -12,7 +12,7 @@ class StoreProductRequest extends FormRequest
     {
         return [
             'name'          => 'required|string|max:255',
-            'sku'           => 'required|string|max:100|unique:products,sku',
+            'brand'         => 'nullable|string|max:100',
             'category_id'   => 'nullable|exists:categories,id',
             'description'   => 'nullable|string',
             'image'         => 'nullable|image|max:2048',

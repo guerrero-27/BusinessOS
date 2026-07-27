@@ -12,14 +12,9 @@ class UpdateProductRequest extends FormRequest
 
     public function rules(): array
     {
-        $productId = $this->route('product') instanceof \App\Models\Product
-            ? $this->route('product')->id
-            : $this->route('product');
-
         return [
             'name'          => 'required|string|max:255',
-            'sku'           => 'required|string|max:100|unique:products,sku,' . $productId,
-            'barcode'       => 'nullable|string|max:100',
+            'brand'         => 'nullable|string|max:100',
             'category_id'   => 'nullable|exists:categories,id',
             'description'   => 'nullable|string',
             'image'         => 'nullable|image|max:2048',
