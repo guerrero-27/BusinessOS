@@ -1,0 +1,362 @@
+<x-app-layout>
+    @if (session('success'))
+        <div class="bg-green-50 border border-green-200 text-green-800 px-4 py-3 rounded-lg mb-6 text-sm">
+            {{ session('success') }}
+        </div>
+    @endif
+
+    @php
+        $stockColors = [
+            'in_stock'     => 'bg-green-50 text-green-700 border-green-200',
+            'low_stock'    => 'bg-yellow-50 text-yellow-700 border-yellow-200',
+            'out_of_stock' => 'bg-red-50 text-red-700 border-red-200',
+        ];
+        $stockLabels = [
+            'in_stock'     => 'In Stock',
+            'low_stock'    => 'Low Stock',
+            'out_of_stock' => 'Out of Stock',
+        ];
+        $typeColors = [
+            'in'         => 'bg-green-50 text-green-700 border-green-200',
+            'out'        => 'bg-red-50 text-red-700 border-red-200',
+            'adjustment' => 'bg-blue-50 text-blue-700 border-blue-200',
+        ];
+    @endphp
+
+    {{-- Stats --}}
+    <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6">
+        <div class="bg-white border border-gray-200 rounded-lg p-4 shadow-sm">
+            <p class="text-xs text-gray-500 uppercase tracking-wide">Total Products</p>
+            <p class="text-2xl font-semibold text-gray-800 mt-1">{{ $totalProducts }}</p>
+        </div>
+        <div class="bg-white border border-gray-200 rounded-lg p-4 shadow-sm">
+            <p class="text-xs text-gray-500 uppercase tracking-wide">In Stock</p>
+            <p class="text-2xl font-semibold text-green-600 mt-1">{{ $inStockCount }}</p>
+        </div>
+        <div class="bg-white border border-gray-200 rounded-lg p-4 shadow-sm">
+            <p class="text-xs text-gray-500 uppercase tracking-wide">Low Stock</p>
+            <p class="text-2xl font-semibold text-yellow-600 mt-1">{{ $lowStockCount }}</p>
+        </div>
+        <div class="bg-white border border-gray-200 rounded-lg p-4 shadow-sm">
+            <p class="text-xs text-gray-500 uppercase tracking-wide">Out of Stock</p>
+            <p class="text-2xl font-semibold text-red-600 mt-1">{{ $outOfStockCount }}</p>
+        </div>
+    </div>
+
+    {{-- Stock Overview --}}
+    <div class="mb-8">
+        <div class="mb-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+            <h2 class="text-base font-semibold text-gray-800">Stock Overview</h2>
+            <div class="flex flex-wrap gap-2 items-center">
+                <form action="{{ route('inventory.index') }}" method="GET" class="flex flex-wrap gap-2">
+                    <input type="text" name="search" value="{{ request('search') }}" placeholder="Name or SKU..."
+                        class="w-40 border-gray-300 rounded-lg shadow-sm text-sm focus:ring-indigo-500 focus:border-indigo-500">
+                    <select name="category" class="border-gray-300 rounded-lg shadow-sm text-sm focus:ring-indigo-500 focus:border-indigo-500">
+                        <option value="">All Categories</option>
+                        @foreach ($categories as $cat)
+                            <option value="{{ $cat->id }}" @selected(request('category') == $cat->id)>{{ $cat->name }}</option>
+                        @endforeach
+                    </select>
+                    <select name="stock_status" class="border-gray-300 rounded-lg shadow-sm text-sm focus:ring-indigo-500 focus:border-indigo-500">
+                        <option value="">All Stock</option>
+                        <option value="in_stock" @selected(request('stock_status') === 'in_stock')>In Stock</option>
+                        <option value="low_stock" @selected(request('stock_status') === 'low_stock')>Low Stock</option>
+                        <option value="out_of_stock" @selected(request('stock_status') === 'out_of_stock')>Out of Stock</option>
+                    </select>
+                    <button type="submit" class="px-3 py-2 bg-gray-100 border border-gray-300 rounded-lg text-sm text-gray-700 hover:bg-gray-200 transition">Filter</button>
+                    @if (request()->hasAny(['search', 'category', 'stock_status']))
+                        <a href="{{ route('inventory.index') }}" class="px-3 py-2 text-sm text-gray-500 hover:text-gray-700">Clear</a>
+                    @endif
+                </form>
+                <button onclick="document.getElementById('modal-adjust').classList.remove('hidden')"
+                    class="inline-flex items-center gap-1 bg-indigo-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-indigo-700 transition whitespace-nowrap">
+                    + Adjust Stock
+                </button>
+            </div>
+        </div>
+
+        <div class="bg-white border border-gray-200 rounded-lg shadow-sm overflow-hidden">
+            <div class="hidden sm:block overflow-x-auto">
+                <table class="w-full text-sm text-left">
+                    <thead class="bg-gray-50 border-b border-gray-200 text-gray-500 uppercase text-xs tracking-wide">
+                        <tr>
+                            <th class="px-5 py-3">Product</th>
+                            <th class="px-5 py-3">SKU</th>
+                            <th class="px-5 py-3">Category</th>
+                            <th class="px-5 py-3">Current Stock</th>
+                            <th class="px-5 py-3">Min</th>
+                            <th class="px-5 py-3">Max</th>
+                            <th class="px-5 py-3">Status</th>
+                            <th class="px-5 py-3 text-right">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-100">
+                        @forelse ($products as $product)
+                            @php $ss = $product->stockStatusLabel(); @endphp
+                            <tr class="hover:bg-gray-50 transition">
+                                <td class="px-5 py-3 font-medium text-gray-800">{{ $product->name }}</td>
+                                <td class="px-5 py-3 text-gray-400 font-mono text-xs">{{ $product->sku }}</td>
+                                <td class="px-5 py-3 text-gray-500">{{ $product->category?->name ?? '—' }}</td>
+                                <td class="px-5 py-3">
+                                    <span class="font-semibold {{ $ss === 'out_of_stock' ? 'text-red-600' : ($ss === 'low_stock' ? 'text-yellow-600' : 'text-gray-800') }}">
+                                        {{ $product->current_stock }}
+                                    </span>
+                                    <span class="text-gray-400 text-xs ml-1">{{ $product->unit }}</span>
+                                </td>
+                                <td class="px-5 py-3 text-gray-500">{{ $product->min_stock }}</td>
+                                <td class="px-5 py-3 text-gray-500">{{ $product->max_stock ?? '—' }}</td>
+                                <td class="px-5 py-3">
+                                    <span class="inline-block px-2 py-0.5 text-xs font-medium border rounded-full {{ $stockColors[$ss] }}">
+                                        {{ $stockLabels[$ss] }}
+                                    </span>
+                                </td>
+                                <td class="px-5 py-3 text-right">
+                                    <button onclick="openAdjust({{ $product->id }}, '{{ addslashes($product->name) }}', {{ $product->current_stock }})"
+                                        class="text-indigo-600 hover:text-indigo-800 text-sm font-medium">Adjust</button>
+                                </td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="8" class="text-center text-gray-400 py-10 text-sm">No products found.</td>
+                            </tr>
+                        @endforelse
+                    </tbody>
+                </table>
+            </div>
+
+            {{-- Mobile --}}
+            <div class="sm:hidden divide-y divide-gray-100">
+                @forelse ($products as $product)
+                    @php $ss = $product->stockStatusLabel(); @endphp
+                    <div class="px-4 py-4 flex items-center justify-between gap-2">
+                        <div>
+                            <p class="font-medium text-gray-800 text-sm">{{ $product->name }}</p>
+                            <p class="text-gray-400 text-xs font-mono">{{ $product->sku }}</p>
+                            <p class="text-xs mt-1">
+                                <span class="font-semibold {{ $ss === 'out_of_stock' ? 'text-red-600' : ($ss === 'low_stock' ? 'text-yellow-600' : 'text-gray-700') }}">
+                                    {{ $product->current_stock }} {{ $product->unit }}
+                                </span>
+                                <span class="text-gray-400">/ min {{ $product->min_stock }}</span>
+                            </p>
+                        </div>
+                        <div class="flex flex-col items-end gap-2 shrink-0">
+                            <span class="inline-block px-2 py-0.5 text-xs font-medium border rounded-full {{ $stockColors[$ss] }}">
+                                {{ $stockLabels[$ss] }}
+                            </span>
+                            <button onclick="openAdjust({{ $product->id }}, '{{ addslashes($product->name) }}', {{ $product->current_stock }})"
+                                class="text-indigo-600 text-xs font-medium">Adjust</button>
+                        </div>
+                    </div>
+                @empty
+                    <div class="text-center text-gray-400 py-10 text-sm">No products found.</div>
+                @endforelse
+            </div>
+        </div>
+
+        @if ($products->hasPages())
+            <div class="mt-4">{{ $products->links() }}</div>
+        @endif
+    </div>
+
+    {{-- Movement History --}}
+    <div>
+        <div class="mb-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+            <h2 class="text-base font-semibold text-gray-800">Movement History</h2>
+            <form action="{{ route('inventory.index') }}" method="GET" class="flex flex-wrap gap-2">
+                {{-- preserve stock filters --}}
+                @foreach (['search', 'category', 'stock_status'] as $f)
+                    @if (request($f))
+                        <input type="hidden" name="{{ $f }}" value="{{ request($f) }}">
+                    @endif
+                @endforeach
+                <select name="movement_type" class="border-gray-300 rounded-lg shadow-sm text-sm focus:ring-indigo-500 focus:border-indigo-500">
+                    <option value="">All Types</option>
+                    <option value="in" @selected(request('movement_type') === 'in')>Stock In</option>
+                    <option value="out" @selected(request('movement_type') === 'out')>Stock Out</option>
+                    <option value="adjustment" @selected(request('movement_type') === 'adjustment')>Adjustment</option>
+                </select>
+                <button type="submit" class="px-3 py-2 bg-gray-100 border border-gray-300 rounded-lg text-sm text-gray-700 hover:bg-gray-200 transition">Filter</button>
+            </form>
+        </div>
+
+        <div class="bg-white border border-gray-200 rounded-lg shadow-sm overflow-hidden">
+            <div class="hidden sm:block overflow-x-auto">
+                <table class="w-full text-sm text-left">
+                    <thead class="bg-gray-50 border-b border-gray-200 text-gray-500 uppercase text-xs tracking-wide">
+                        <tr>
+                            <th class="px-5 py-3">Date</th>
+                            <th class="px-5 py-3">Product</th>
+                            <th class="px-5 py-3">Type</th>
+                            <th class="px-5 py-3">Qty Change</th>
+                            <th class="px-5 py-3">Before → After</th>
+                            <th class="px-5 py-3">Reason</th>
+                            <th class="px-5 py-3">Reference</th>
+                            <th class="px-5 py-3">By</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-100">
+                        @forelse ($movements as $m)
+                            <tr class="hover:bg-gray-50 transition">
+                                <td class="px-5 py-3 text-gray-400 text-xs whitespace-nowrap">{{ $m->created_at->format('M d, Y H:i') }}</td>
+                                <td class="px-5 py-3 font-medium text-gray-800">{{ $m->product?->name ?? '—' }}</td>
+                                <td class="px-5 py-3">
+                                    <span class="inline-block px-2 py-0.5 text-xs font-medium border rounded-full {{ $typeColors[$m->type] }}">
+                                        {{ ucfirst($m->type) }}
+                                    </span>
+                                </td>
+                                <td class="px-5 py-3 font-semibold {{ $m->quantity >= 0 ? 'text-green-600' : 'text-red-600' }}">
+                                    {{ $m->quantity >= 0 ? '+' : '' }}{{ $m->quantity }}
+                                </td>
+                                <td class="px-5 py-3 text-gray-500 text-xs">{{ $m->stock_before }} → {{ $m->stock_after }}</td>
+                                <td class="px-5 py-3 text-gray-500">{{ $m->reason ?? '—' }}</td>
+                                <td class="px-5 py-3 text-gray-400 font-mono text-xs">{{ $m->reference ?? '—' }}</td>
+                                <td class="px-5 py-3 text-gray-500">{{ $m->user?->name ?? 'System' }}</td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="8" class="text-center text-gray-400 py-10 text-sm">No movements recorded yet.</td>
+                            </tr>
+                        @endforelse
+                    </tbody>
+                </table>
+            </div>
+
+            {{-- Mobile --}}
+            <div class="sm:hidden divide-y divide-gray-100">
+                @forelse ($movements as $m)
+                    <div class="px-4 py-4">
+                        <div class="flex items-start justify-between gap-2">
+                            <div>
+                                <p class="font-medium text-gray-800 text-sm">{{ $m->product?->name ?? '—' }}</p>
+                                <p class="text-gray-400 text-xs mt-0.5">{{ $m->created_at->format('M d, Y H:i') }}</p>
+                                @if ($m->reason)
+                                    <p class="text-gray-500 text-xs mt-0.5">{{ $m->reason }}</p>
+                                @endif
+                            </div>
+                            <div class="flex flex-col items-end gap-1 shrink-0">
+                                <span class="inline-block px-2 py-0.5 text-xs font-medium border rounded-full {{ $typeColors[$m->type] }}">
+                                    {{ ucfirst($m->type) }}
+                                </span>
+                                <span class="text-sm font-semibold {{ $m->quantity >= 0 ? 'text-green-600' : 'text-red-600' }}">
+                                    {{ $m->quantity >= 0 ? '+' : '' }}{{ $m->quantity }}
+                                </span>
+                                <span class="text-xs text-gray-400">{{ $m->stock_before }} → {{ $m->stock_after }}</span>
+                            </div>
+                        </div>
+                    </div>
+                @empty
+                    <div class="text-center text-gray-400 py-10 text-sm">No movements recorded yet.</div>
+                @endforelse
+            </div>
+        </div>
+
+        @if ($movements->hasPages())
+            <div class="mt-4">{{ $movements->appends(request()->except('mpage'))->links() }}</div>
+        @endif
+    </div>
+
+    {{-- Adjust Stock Modal --}}
+    <div id="modal-adjust" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4">
+        <div class="bg-white rounded-xl shadow-xl w-full max-w-md">
+            <div class="flex items-center justify-between px-6 py-4 border-b border-gray-100">
+                <h2 class="text-base font-semibold text-gray-800">Adjust Stock</h2>
+                <button onclick="closeAdjust()" class="text-gray-400 hover:text-gray-600 text-lg leading-none">✕</button>
+            </div>
+            <form action="{{ route('inventory.store') }}" method="POST" class="p-6 space-y-4">
+                @csrf
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Product <span class="text-red-500">*</span></label>
+                    <select name="product_id" id="adj-product" onchange="updateCurrentStock()"
+                        class="w-full border-gray-300 rounded-lg shadow-sm text-sm focus:ring-indigo-500 focus:border-indigo-500">
+                        <option value="">— Select Product —</option>
+                        @foreach ($allProducts as $p)
+                            <option value="{{ $p->id }}" data-stock="{{ $p->current_stock }}" data-unit="{{ $p->unit }}">
+                                {{ $p->name }} ({{ $p->sku }})
+                            </option>
+                        @endforeach
+                    </select>
+                    @error('product_id') <p class="text-xs text-red-600 mt-1">{{ $message }}</p> @enderror
+                </div>
+
+                <div id="adj-current-stock" class="hidden text-sm text-gray-500 bg-gray-50 border border-gray-200 rounded-lg px-3 py-2">
+                    Current stock: <span id="adj-stock-val" class="font-semibold text-gray-800"></span> <span id="adj-unit-val"></span>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Type <span class="text-red-500">*</span></label>
+                    <div class="grid grid-cols-3 gap-2">
+                        @foreach (['in' => 'Stock In', 'out' => 'Stock Out', 'adjustment' => 'Adjustment'] as $val => $label)
+                            <label class="flex items-center justify-center gap-1.5 border rounded-lg px-3 py-2 cursor-pointer text-sm has-[:checked]:border-indigo-500 has-[:checked]:bg-indigo-50 has-[:checked]:text-indigo-700 text-gray-600 hover:bg-gray-50 transition">
+                                <input type="radio" name="type" value="{{ $val }}" class="sr-only" @checked(old('type', 'in') === $val)>
+                                {{ $label }}
+                            </label>
+                        @endforeach
+                    </div>
+                    @error('type') <p class="text-xs text-red-600 mt-1">{{ $message }}</p> @enderror
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Quantity <span class="text-red-500">*</span></label>
+                    <input type="number" name="quantity" value="{{ old('quantity') }}" min="1"
+                        class="w-full border-gray-300 rounded-lg shadow-sm text-sm focus:ring-indigo-500 focus:border-indigo-500">
+                    <p class="text-xs text-gray-400 mt-1">For <em>Adjustment</em>, enter the new absolute stock value.</p>
+                    @error('quantity') <p class="text-xs text-red-600 mt-1">{{ $message }}</p> @enderror
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Reason</label>
+                    <input type="text" name="reason" value="{{ old('reason') }}" placeholder="e.g. Purchase delivery, Damaged goods..."
+                        class="w-full border-gray-300 rounded-lg shadow-sm text-sm focus:ring-indigo-500 focus:border-indigo-500">
+                    @error('reason') <p class="text-xs text-red-600 mt-1">{{ $message }}</p> @enderror
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Reference #</label>
+                    <input type="text" name="reference" value="{{ old('reference') }}" placeholder="PO#, Invoice#..."
+                        class="w-full border-gray-300 rounded-lg shadow-sm text-sm focus:ring-indigo-500 focus:border-indigo-500">
+                    @error('reference') <p class="text-xs text-red-600 mt-1">{{ $message }}</p> @enderror
+                </div>
+
+                <div class="flex justify-end gap-3 pt-2 border-t border-gray-100">
+                    <button type="button" onclick="closeAdjust()" class="px-4 py-2 text-sm text-gray-600 hover:text-gray-800 transition">Cancel</button>
+                    <button type="submit" class="bg-indigo-600 text-white px-5 py-2 rounded-lg text-sm font-medium hover:bg-indigo-700 transition">
+                        Save
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        function openAdjust(productId, productName, currentStock) {
+            const modal = document.getElementById('modal-adjust');
+            const select = document.getElementById('adj-product');
+            select.value = productId;
+            updateCurrentStock();
+            modal.classList.remove('hidden');
+        }
+
+        function closeAdjust() {
+            document.getElementById('modal-adjust').classList.add('hidden');
+        }
+
+        function updateCurrentStock() {
+            const select = document.getElementById('adj-product');
+            const opt = select.options[select.selectedIndex];
+            const box = document.getElementById('adj-current-stock');
+            if (opt && opt.dataset.stock !== undefined) {
+                document.getElementById('adj-stock-val').textContent = opt.dataset.stock;
+                document.getElementById('adj-unit-val').textContent = opt.dataset.unit;
+                box.classList.remove('hidden');
+            } else {
+                box.classList.add('hidden');
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            @if ($errors->any())
+                document.getElementById('modal-adjust').classList.remove('hidden');
+            @endif
+        });
+    </script>
+</x-app-layout>

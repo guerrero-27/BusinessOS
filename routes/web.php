@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\InventoryController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -13,6 +14,8 @@ Route::get('/', function () {
 Route::resource('customers', CustomerController::class);
 Route::resource('products', ProductController::class)->except(['show', 'create', 'edit']);
 Route::resource('categories', CategoryController::class)->except(['show', 'create', 'edit']);
+Route::get('/inventory', [InventoryController::class, 'index'])->name('inventory.index');
+Route::post('/inventory', [InventoryController::class, 'store'])->name('inventory.store');
 
 Route::get('/dashboard', function () {
     $customerStats = [
@@ -22,7 +25,17 @@ Route::get('/dashboard', function () {
         'new'      => \App\Models\Customer::whereMonth('created_at', now()->month)->count(),
     ];
     $recentCustomers = \App\Models\Customer::latest()->take(5)->get();
-    return view('dashboard', compact('customerStats', 'recentCustomers'));
+    $inventoryStats = [
+        'total'         => \App\Models\Product::where('status', '!=', 'archived')->count(),
+        'low_stock'     => \App\Models\Product::whereRaw('current_stock > 0 AND current_stock <= min_stock')->count(),
+        'out_of_stock'  => \App\Models\Product::where('current_stock', '<=', 0)->count(),
+    ];
+    $lowStockProducts = \App\Models\Product::whereRaw('current_stock <= min_stock')
+        ->where('status', '!=', 'archived')
+        ->orderBy('current_stock')
+        ->take(5)
+        ->get();
+    return view('dashboard', compact('customerStats', 'recentCustomers', 'inventoryStats', 'lowStockProducts'));
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {

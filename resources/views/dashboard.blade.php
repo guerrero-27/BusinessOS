@@ -15,14 +15,11 @@
             <a href="{{ route('customers.create') }}" class="inline-flex items-center gap-1 px-3 py-1.5 bg-indigo-600 text-white text-xs font-medium rounded-lg hover:bg-indigo-700 transition">
                 + Add Customer
             </a>
-            <a href="/products/create" class="inline-flex items-center gap-1 px-3 py-1.5 bg-white border border-gray-200 text-gray-700 text-xs font-medium rounded-lg hover:bg-gray-50 transition">
+            <a href="{{ route('products.index') }}" class="inline-flex items-center gap-1 px-3 py-1.5 bg-white border border-gray-200 text-gray-700 text-xs font-medium rounded-lg hover:bg-gray-50 transition">
                 + Add Product
             </a>
-            <a href="/invoices/create" class="inline-flex items-center gap-1 px-3 py-1.5 bg-white border border-gray-200 text-gray-700 text-xs font-medium rounded-lg hover:bg-gray-50 transition">
-                + Create Invoice
-            </a>
-            <a href="/purchase-orders/create" class="inline-flex items-center gap-1 px-3 py-1.5 bg-white border border-gray-200 text-gray-700 text-xs font-medium rounded-lg hover:bg-gray-50 transition">
-                + Purchase Order
+            <a href="{{ route('inventory.index') }}" class="inline-flex items-center gap-1 px-3 py-1.5 bg-white border border-gray-200 text-gray-700 text-xs font-medium rounded-lg hover:bg-gray-50 transition">
+                Adjust Stock
             </a>
         </div>
     </div>
@@ -53,19 +50,19 @@
     <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
         <div class="bg-white border border-gray-200 rounded-lg p-4 shadow-sm">
             <p class="text-xs text-gray-400 uppercase tracking-wide">Total Products</p>
-            <p class="text-2xl font-bold text-gray-800 mt-1">—</p>
+            <p class="text-2xl font-bold text-gray-800 mt-1">{{ $inventoryStats['total'] }}</p>
         </div>
         <div class="bg-white border border-gray-200 rounded-lg p-4 shadow-sm">
             <p class="text-xs text-gray-400 uppercase tracking-wide">Low Stock</p>
-            <p class="text-2xl font-bold text-yellow-500 mt-1">—</p>
+            <p class="text-2xl font-bold text-yellow-500 mt-1">{{ $inventoryStats['low_stock'] }}</p>
         </div>
         <div class="bg-white border border-gray-200 rounded-lg p-4 shadow-sm">
             <p class="text-xs text-gray-400 uppercase tracking-wide">Out of Stock</p>
-            <p class="text-2xl font-bold text-red-500 mt-1">—</p>
+            <p class="text-2xl font-bold text-red-500 mt-1">{{ $inventoryStats['out_of_stock'] }}</p>
         </div>
         <div class="bg-white border border-gray-200 rounded-lg p-4 shadow-sm">
-            <p class="text-xs text-gray-400 uppercase tracking-wide">Suppliers</p>
-            <p class="text-2xl font-bold text-gray-800 mt-1">—</p>
+            <p class="text-xs text-gray-400 uppercase tracking-wide">Categories</p>
+            <p class="text-2xl font-bold text-gray-800 mt-1">{{ \App\Models\Category::where('is_active', true)->count() }}</p>
         </div>
     </div>
 
@@ -217,24 +214,22 @@
         <div class="bg-white border border-gray-200 rounded-lg shadow-sm overflow-hidden">
             <div class="px-5 py-3 border-b border-gray-100 flex items-center justify-between">
                 <p class="text-sm font-semibold text-gray-700">Low Stock Products</p>
-                <a href="/inventory" class="text-xs text-indigo-600 hover:text-indigo-800 font-medium">View all →</a>
+                <a href="{{ route('inventory.index') }}" class="text-xs text-indigo-600 hover:text-indigo-800 font-medium">View all →</a>
             </div>
             <div class="divide-y divide-gray-100">
-                @php
-                    $lowStock = [
-                        ['name' => 'Mouse',    'qty' => 3],
-                        ['name' => 'Keyboard', 'qty' => 2],
-                        ['name' => 'Monitor',  'qty' => 1],
-                    ];
-                @endphp
-                @foreach ($lowStock as $item)
+                @forelse ($lowStockProducts as $product)
                     <div class="px-5 py-3 flex items-center justify-between">
-                        <p class="text-sm text-gray-700">{{ $item['name'] }}</p>
-                        <span class="text-xs font-medium {{ $item['qty'] <= 1 ? 'text-red-600 bg-red-50 border-red-200' : 'text-yellow-600 bg-yellow-50 border-yellow-200' }} border px-2 py-0.5 rounded-full">
-                            {{ $item['qty'] }} left
+                        <div>
+                            <p class="text-sm text-gray-700">{{ $product->name }}</p>
+                            <p class="text-xs text-gray-400 font-mono">{{ $product->sku }}</p>
+                        </div>
+                        <span class="text-xs font-medium {{ $product->current_stock <= 0 ? 'text-red-600 bg-red-50 border-red-200' : 'text-yellow-600 bg-yellow-50 border-yellow-200' }} border px-2 py-0.5 rounded-full">
+                            {{ $product->current_stock }} left
                         </span>
                     </div>
-                @endforeach
+                @empty
+                    <div class="px-5 py-6 text-center text-sm text-gray-400">All products are well-stocked.</div>
+                @endforelse
             </div>
         </div>
 
