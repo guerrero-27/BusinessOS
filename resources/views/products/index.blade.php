@@ -265,17 +265,44 @@
     @endforeach
 
     <script>
-        function openCreate() {
+        function resetCreateForm() {
             const modal = document.getElementById('modal-create');
-            modal.querySelector('form').reset();
-            // restore select defaults
-            modal.querySelector('[name="status"]').value = 'active';
-            modal.querySelector('[name="unit"]').value = 'pcs';
-            modal.querySelector('[name="current_stock"]').value = '0';
-            modal.querySelector('[name="min_stock"]').value = '0';
-            modal.querySelector('[name="max_stock"]').value = '';
-            modal.querySelector('[name="category_id"]').value = '';
-            modal.classList.remove('hidden');
+            const form = modal?.querySelector('form');
+
+            if (!form) return;
+
+            form.reset();
+
+            const blankFields = [
+                ['input[name="name"]', ''],
+                ['input[name="brand"]', ''],
+                ['input[name="cost_price"]', ''],
+                ['input[name="selling_price"]', ''],
+                ['input[name="unit"]', 'pcs'],
+                ['select[name="status"]', 'active'],
+                ['input[name="current_stock"]', '0'],
+                ['input[name="min_stock"]', '0'],
+                ['input[name="max_stock"]', ''],
+                ['input[name="warehouse"]', ''],
+                ['textarea[name="description"]', ''],
+                ['select[name="category_id"]', ''],
+            ];
+
+            blankFields.forEach(([selector, value]) => {
+                const field = form.querySelector(selector);
+                if (field) field.value = value;
+            });
+
+            const preview = document.getElementById('sku-preview-text-new');
+            if (preview) {
+                preview.textContent = 'Select category & brand to preview';
+                preview.className = 'text-sm font-mono text-indigo-400 italic';
+            }
+        }
+
+        function openCreate() {
+            resetCreateForm();
+            document.getElementById('modal-create').classList.remove('hidden');
         }
 
         function openDelete(id, name) {

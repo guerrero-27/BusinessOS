@@ -149,6 +149,32 @@
     @endforeach
 
     <script>
+        function resetCreateForm() {
+            const modal = document.getElementById('modal-create');
+            const form = modal?.querySelector('form');
+
+            if (!form) return;
+
+            form.reset();
+
+            const nameField = form.querySelector('input[name="name"]');
+            if (nameField) nameField.value = '';
+
+            const slugField = form.querySelector('input[name="slug"]');
+            if (slugField) slugField.value = '';
+
+            const descriptionField = form.querySelector('textarea[name="description"]');
+            if (descriptionField) descriptionField.value = '';
+
+            const activeField = form.querySelector('input[name="is_active"]');
+            if (activeField) activeField.checked = true;
+        }
+
+        function openCreate() {
+            resetCreateForm();
+            document.getElementById('modal-create').classList.remove('hidden');
+        }
+
         function openEdit(id) {
             document.getElementById('modal-edit-' + id).classList.remove('hidden');
         }

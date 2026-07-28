@@ -204,9 +204,15 @@
                     </thead>
                     <tbody class="divide-y divide-gray-100">
                         @forelse ($movements as $m)
-                            <tr class="hover:bg-gray-50 transition">
+                            @php $movementReference = $m->reference_number ?? $m->reference; @endphp
+                            <tr class="hover:bg-gray-50 transition align-top">
                                 <td class="px-5 py-3 text-gray-400 text-xs whitespace-nowrap">{{ $m->created_at->format('M d, Y H:i') }}</td>
-                                <td class="px-5 py-3 font-medium text-gray-800">{{ $m->product?->name ?? '—' }}</td>
+                                <td class="px-5 py-3 min-w-[220px]">
+                                    <div class="font-medium text-gray-800 break-words">{{ $m->product?->name ?? 'Deleted product' }}</div>
+                                    @if ($m->product?->sku)
+                                        <div class="text-xs text-gray-400 font-mono mt-0.5">{{ $m->product->sku }}</div>
+                                    @endif
+                                </td>
                                 <td class="px-5 py-3">
                                     <span class="inline-block px-2 py-0.5 text-xs font-medium border rounded-full {{ $typeColors[$m->type] }}">
                                         {{ ucfirst($m->type) }}
@@ -215,19 +221,19 @@
                                 <td class="px-5 py-3 font-semibold {{ $m->quantity >= 0 ? 'text-green-600' : 'text-red-600' }}">
                                     {{ $m->quantity >= 0 ? '+' : '' }}{{ $m->quantity }}
                                 </td>
-                                <td class="px-5 py-3 text-gray-500 text-xs">{{ $m->stock_before }} → {{ $m->stock_after }}</td>
-                                <td class="px-5 py-3 text-gray-500">{{ $m->reason ?? '—' }}</td>
+                                <td class="px-5 py-3 text-gray-500 text-xs whitespace-nowrap">{{ $m->stock_before }} → {{ $m->stock_after }}</td>
+                                <td class="px-5 py-3 text-gray-500 max-w-[220px] break-words">{{ $m->reason ?? '—' }}</td>
                                 <td class="px-5 py-3">
-                                    @if ($m->reference_number)
-                                        <span class="inline-block font-mono text-xs px-2 py-0.5 rounded border
-                                            {{ str_starts_with($m->reference_number, 'PO') ? 'bg-green-50 text-green-700 border-green-200' : (str_starts_with($m->reference_number, 'INV') ? 'bg-red-50 text-red-700 border-red-200' : 'bg-blue-50 text-blue-700 border-blue-200') }}">
-                                            {{ $m->reference_number }}
+                                    @if (!empty($movementReference))
+                                        <span class="inline-flex font-mono text-xs px-2.5 py-1 rounded-full border
+                                            {{ str_starts_with($movementReference, 'PO') ? 'bg-green-50 text-green-700 border-green-200' : (str_starts_with($movementReference, 'INV') ? 'bg-red-50 text-red-700 border-red-200' : 'bg-blue-50 text-blue-700 border-blue-200') }}">
+                                            {{ $movementReference }}
                                         </span>
                                     @else
                                         <span class="text-gray-400 text-xs">—</span>
                                     @endif
                                 </td>
-                                <td class="px-5 py-3 text-gray-500">{{ $m->user?->name ?? 'System' }}</td>
+                                <td class="px-5 py-3 text-gray-500 whitespace-nowrap">{{ $m->user?->name ?? 'System' }}</td>
                             </tr>
                         @empty
                             <tr>
@@ -241,23 +247,43 @@
             {{-- Mobile --}}
             <div class="sm:hidden divide-y divide-gray-100">
                 @forelse ($movements as $m)
+                    @php $movementReference = $m->reference_number ?? $m->reference; @endphp
                     <div class="px-4 py-4">
-                        <div class="flex items-start justify-between gap-2">
-                            <div>
-                                <p class="font-medium text-gray-800 text-sm">{{ $m->product?->name ?? '—' }}</p>
-                                <p class="text-gray-400 text-xs mt-0.5">{{ $m->created_at->format('M d, Y H:i') }}</p>
-                                @if ($m->reason)
-                                    <p class="text-gray-500 text-xs mt-0.5">{{ $m->reason }}</p>
-                                @endif
-                            </div>
-                            <div class="flex flex-col items-end gap-1 shrink-0">
-                                <span class="inline-block px-2 py-0.5 text-xs font-medium border rounded-full {{ $typeColors[$m->type] }}">
+                        <div class="rounded-xl border border-gray-200 bg-gray-50 p-3">
+                            <div class="flex items-start justify-between gap-2">
+                                <div class="min-w-0">
+                                    <p class="font-medium text-gray-800 text-sm break-words">{{ $m->product?->name ?? 'Deleted product' }}</p>
+                                    @if ($m->product?->sku)
+                                        <p class="text-gray-400 text-xs font-mono mt-0.5">{{ $m->product->sku }}</p>
+                                    @endif
+                                    <p class="text-gray-400 text-xs mt-2">{{ $m->created_at->format('M d, Y H:i') }}</p>
+                                </div>
+                                <span class="inline-block px-2 py-0.5 text-xs font-medium border rounded-full shrink-0 {{ $typeColors[$m->type] }}">
                                     {{ ucfirst($m->type) }}
                                 </span>
-                                <span class="text-sm font-semibold {{ $m->quantity >= 0 ? 'text-green-600' : 'text-red-600' }}">
-                                    {{ $m->quantity >= 0 ? '+' : '' }}{{ $m->quantity }}
-                                </span>
-                                <span class="text-xs text-gray-400">{{ $m->stock_before }} → {{ $m->stock_after }}</span>
+                            </div>
+
+                            <div class="mt-3 flex items-center justify-between gap-2">
+                                <div>
+                                    <p class="text-sm font-semibold {{ $m->quantity >= 0 ? 'text-green-600' : 'text-red-600' }}">
+                                        {{ $m->quantity >= 0 ? '+' : '' }}{{ $m->quantity }}
+                                    </p>
+                                    <p class="text-xs text-gray-400">{{ $m->stock_before }} → {{ $m->stock_after }}</p>
+                                </div>
+                                @if (!empty($movementReference))
+                                    <span class="inline-flex font-mono text-[11px] px-2 py-1 rounded-full border {{ str_starts_with($movementReference, 'PO') ? 'bg-green-50 text-green-700 border-green-200' : (str_starts_with($movementReference, 'INV') ? 'bg-red-50 text-red-700 border-red-200' : 'bg-blue-50 text-blue-700 border-blue-200') }}">
+                                        {{ $movementReference }}
+                                    </span>
+                                @endif
+                            </div>
+
+                            @if ($m->reason)
+                                <p class="mt-2 text-xs text-gray-500">{{ $m->reason }}</p>
+                            @endif
+
+                            <div class="mt-3 flex items-center justify-between border-t border-gray-200 pt-2 text-xs text-gray-400">
+                                <span>{{ $m->user?->name ?? 'System' }}</span>
+                                <span>Reference</span>
                             </div>
                         </div>
                     </div>
