@@ -7,6 +7,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\InventoryController;
 use App\Http\Controllers\SkuPreviewController;
+use App\Http\Controllers\SupplierController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -15,6 +16,7 @@ Route::get('/', function () {
 Route::resource('customers', CustomerController::class);
 Route::resource('products', ProductController::class)->except(['show', 'create', 'edit']);
 Route::resource('categories', CategoryController::class)->except(['show', 'create', 'edit']);
+Route::resource('suppliers', SupplierController::class)->except(['show', 'create', 'edit']);
 Route::get('/inventory', [InventoryController::class, 'index'])->name('inventory.index');
 Route::post('/inventory', [InventoryController::class, 'store'])->name('inventory.store');
 Route::get('/inventory/barcode/{product}', [InventoryController::class, 'barcodeLabel'])->name('inventory.barcode');
