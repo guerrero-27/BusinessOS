@@ -162,7 +162,7 @@
         {{-- Inventory Distribution --}}
         <div class="bg-white border border-gray-200 rounded-lg p-5 shadow-sm">
             <p class="text-sm font-semibold text-gray-700 mb-4">Inventory Distribution</p>
-            <div class="flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-6">
+            <div class="flex flex-col items-center text-center sm:flex-row sm:items-center sm:text-left gap-4 sm:gap-6">
                 <svg viewBox="0 0 36 36" class="w-32 h-32 shrink-0">
                     {{-- Pie segments using stroke-dasharray trick --}}
                     <circle cx="18" cy="18" r="15.9" fill="transparent" stroke="#6366f1" stroke-width="3.8" stroke-dasharray="40 60" stroke-dashoffset="25"/>
@@ -170,11 +170,11 @@
                     <circle cx="18" cy="18" r="15.9" fill="transparent" stroke="#ef4444" stroke-width="3.8" stroke-dasharray="20 80" stroke-dashoffset="-40"/>
                     <circle cx="18" cy="18" r="15.9" fill="transparent" stroke="#d1d5db" stroke-width="3.8" stroke-dasharray="15 85" stroke-dashoffset="-60"/>
                 </svg>
-                <div class="space-y-2 text-sm min-w-0">
-                    <div class="flex items-center gap-2"><span class="w-3 h-3 rounded-sm bg-indigo-500 inline-block"></span><span class="text-gray-600">Electronics <span class="text-gray-400">40%</span></span></div>
-                    <div class="flex items-center gap-2"><span class="w-3 h-3 rounded-sm bg-yellow-400 inline-block"></span><span class="text-gray-600">Accessories <span class="text-gray-400">25%</span></span></div>
-                    <div class="flex items-center gap-2"><span class="w-3 h-3 rounded-sm bg-red-400 inline-block"></span><span class="text-gray-600">Peripherals <span class="text-gray-400">20%</span></span></div>
-                    <div class="flex items-center gap-2"><span class="w-3 h-3 rounded-sm bg-gray-300 inline-block"></span><span class="text-gray-600">Others <span class="text-gray-400">15%</span></span></div>
+                <div class="space-y-2 text-sm min-w-0 w-full sm:w-auto">
+                    <div class="flex items-center justify-center sm:justify-start gap-2"><span class="w-3 h-3 rounded-sm bg-indigo-500 inline-block"></span><span class="text-gray-600">Electronics <span class="text-gray-400">40%</span></span></div>
+                    <div class="flex items-center justify-center sm:justify-start gap-2"><span class="w-3 h-3 rounded-sm bg-yellow-400 inline-block"></span><span class="text-gray-600">Accessories <span class="text-gray-400">25%</span></span></div>
+                    <div class="flex items-center justify-center sm:justify-start gap-2"><span class="w-3 h-3 rounded-sm bg-red-400 inline-block"></span><span class="text-gray-600">Peripherals <span class="text-gray-400">20%</span></span></div>
+                    <div class="flex items-center justify-center sm:justify-start gap-2"><span class="w-3 h-3 rounded-sm bg-gray-300 inline-block"></span><span class="text-gray-600">Others <span class="text-gray-400">15%</span></span></div>
                 </div>
             </div>
         </div>
