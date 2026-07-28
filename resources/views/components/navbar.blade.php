@@ -1,4 +1,4 @@
-<header class="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-4 sm:px-6 gap-3 sm:gap-4">
+<header class="fixed top-0 inset-x-0 z-30 h-16 bg-white/95 backdrop-blur border-b border-gray-200 flex items-center justify-between px-4 sm:px-6 gap-3 sm:gap-4 lg:static lg:z-auto lg:bg-white lg:backdrop-blur-none">
 
     <button type="button" class="lg:hidden inline-flex items-center justify-center rounded-lg p-2 text-gray-500 hover:bg-gray-100 hover:text-gray-700 transition" aria-label="Open sidebar" onclick="window.dispatchEvent(new CustomEvent('toggle-sidebar'))">
         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">

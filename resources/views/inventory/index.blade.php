@@ -147,8 +147,16 @@
                             <span class="inline-block px-2 py-0.5 text-xs font-medium border rounded-full {{ $stockColors[$ss] }}">
                                 {{ $stockLabels[$ss] }}
                             </span>
-                            <button onclick="openAdjust({{ $product->id }}, '{{ addslashes($product->name) }}', {{ $product->current_stock }})"
-                                class="text-indigo-600 text-xs font-medium">Adjust</button>
+                            <div class="flex items-center gap-2">
+                                <a href="{{ route('inventory.barcode', $product) }}" target="_blank"
+                                    class="inline-flex items-center rounded-md border border-gray-200 bg-white px-2 py-1 text-xs font-medium text-gray-600">
+                                    Label
+                                </a>
+                                <button onclick="openAdjust({{ $product->id }}, '{{ addslashes($product->name) }}', {{ $product->current_stock }})"
+                                    class="inline-flex items-center rounded-md border border-indigo-200 bg-indigo-50 px-2 py-1 text-xs font-medium text-indigo-700">
+                                    Adjust
+                                </button>
+                            </div>
                         </div>
                     </div>
                 @empty
