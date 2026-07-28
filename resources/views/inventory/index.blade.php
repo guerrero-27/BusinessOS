@@ -50,14 +50,14 @@
             <div class="flex flex-wrap gap-2 items-center">
                 <form action="{{ route('inventory.index') }}" method="GET" class="flex flex-wrap gap-2">
                     <input type="text" name="search" value="{{ request('search') }}" placeholder="Name or SKU..."
-                        class="w-40 border-gray-300 rounded-lg shadow-sm text-sm focus:ring-indigo-500 focus:border-indigo-500">
-                    <select name="category" class="border-gray-300 rounded-lg shadow-sm text-sm focus:ring-indigo-500 focus:border-indigo-500">
+                        class="w-full sm:w-40 border-gray-300 rounded-lg shadow-sm text-sm focus:ring-indigo-500 focus:border-indigo-500">
+                    <select name="category" class="w-full sm:w-auto border-gray-300 rounded-lg shadow-sm text-sm focus:ring-indigo-500 focus:border-indigo-500">
                         <option value="">All Categories</option>
                         @foreach ($categories as $cat)
                             <option value="{{ $cat->id }}" @selected(request('category') == $cat->id)>{{ $cat->name }}</option>
                         @endforeach
                     </select>
-                    <select name="stock_status" class="border-gray-300 rounded-lg shadow-sm text-sm focus:ring-indigo-500 focus:border-indigo-500">
+                    <select name="stock_status" class="w-full sm:w-auto border-gray-300 rounded-lg shadow-sm text-sm focus:ring-indigo-500 focus:border-indigo-500">
                         <option value="">All Stock</option>
                         <option value="in_stock" @selected(request('stock_status') === 'in_stock')>In Stock</option>
                         <option value="low_stock" @selected(request('stock_status') === 'low_stock')>Low Stock</option>
@@ -173,8 +173,8 @@
                     @endif
                 @endforeach
                 <input type="text" name="ref_search" value="{{ request('ref_search') }}" placeholder="Search ref # (e.g. PO-2026-0001)"
-                    class="w-52 border-gray-300 rounded-lg shadow-sm text-sm text-gray-900 focus:ring-indigo-500 focus:border-indigo-500">
-                <select name="movement_type" class="border-gray-300 rounded-lg shadow-sm text-sm focus:ring-indigo-500 focus:border-indigo-500">
+                    class="w-full sm:w-52 border-gray-300 rounded-lg shadow-sm text-sm text-gray-900 focus:ring-indigo-500 focus:border-indigo-500">
+                <select name="movement_type" class="w-full sm:w-auto border-gray-300 rounded-lg shadow-sm text-sm focus:ring-indigo-500 focus:border-indigo-500">
                     <option value="">All Types</option>
                     <option value="in" @selected(request('movement_type') === 'in')>Stock In</option>
                     <option value="out" @selected(request('movement_type') === 'out')>Stock Out</option>

@@ -1,8 +1,17 @@
-<aside class="w-64 bg-white border-r border-gray-200 min-h-screen flex flex-col">
+<div id="sidebar-backdrop" class="fixed inset-0 z-30 hidden bg-black/40 lg:hidden"></div>
 
-    <div class="px-6 py-5 border-b border-gray-100">
+<aside id="app-sidebar" class="fixed inset-y-0 left-0 z-40 w-72 max-w-[85vw] -translate-x-full bg-white border-r border-gray-200 min-h-screen flex flex-col transition-transform duration-200 ease-out lg:static lg:z-auto lg:w-64 lg:max-w-none lg:translate-x-0">
+
+    <div class="px-6 py-5 border-b border-gray-100 flex items-start justify-between gap-3">
+        <div>
         <h1 class="text-xl font-bold text-indigo-600 tracking-tight">BusinessOS</h1>
         <p class="text-xs text-gray-400 mt-0.5">Business Management</p>
+        </div>
+        <button id="close-sidebar-btn" type="button" class="lg:hidden inline-flex items-center justify-center rounded-lg p-1.5 text-gray-400 hover:bg-gray-100 hover:text-gray-600 transition" aria-label="Close sidebar">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+            </svg>
+        </button>
     </div>
 
     <nav class="flex-1 px-3 py-4 space-y-0.5">

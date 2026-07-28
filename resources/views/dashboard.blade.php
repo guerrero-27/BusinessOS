@@ -26,7 +26,7 @@
 
     {{-- KPI Row 1: Customers --}}
     <p class="text-xs font-semibold text-gray-400 uppercase tracking-widest mb-2">Customers</p>
-    <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
         <div class="bg-white border border-gray-200 rounded-lg p-4 shadow-sm">
             <p class="text-xs text-gray-400 uppercase tracking-wide">Total Customers</p>
             <p class="text-2xl font-bold text-gray-800 mt-1">{{ $customerStats['total'] }}</p>
@@ -47,7 +47,7 @@
 
     {{-- KPI Row 2: Inventory --}}
     <p class="text-xs font-semibold text-gray-400 uppercase tracking-widest mb-2">Inventory</p>
-    <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
         <div class="bg-white border border-gray-200 rounded-lg p-4 shadow-sm">
             <p class="text-xs text-gray-400 uppercase tracking-wide">Total Products</p>
             <p class="text-2xl font-bold text-gray-800 mt-1">{{ $inventoryStats['total'] }}</p>
@@ -68,7 +68,7 @@
 
     {{-- KPI Row 3: Finance --}}
     <p class="text-xs font-semibold text-gray-400 uppercase tracking-widest mb-2">Finance</p>
-    <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
         <div class="bg-white border border-gray-200 rounded-lg p-4 shadow-sm">
             <p class="text-xs text-gray-400 uppercase tracking-wide">Today's Sales</p>
             <p class="text-2xl font-bold text-gray-800 mt-1">—</p>
@@ -126,7 +126,7 @@
                     </div>
                 @endforeach
             </div>
-            <div class="flex gap-4 mt-3">
+            <div class="flex flex-wrap gap-3 mt-3">
                 <span class="flex items-center gap-1 text-xs text-gray-500"><span class="w-2.5 h-2.5 rounded-sm bg-indigo-400 inline-block"></span> Sales</span>
                 <span class="flex items-center gap-1 text-xs text-gray-500"><span class="w-2.5 h-2.5 rounded-sm bg-red-300 inline-block"></span> Expenses</span>
             </div>
@@ -162,7 +162,7 @@
         {{-- Inventory Distribution --}}
         <div class="bg-white border border-gray-200 rounded-lg p-5 shadow-sm">
             <p class="text-sm font-semibold text-gray-700 mb-4">Inventory Distribution</p>
-            <div class="flex items-center gap-6">
+            <div class="flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-6">
                 <svg viewBox="0 0 36 36" class="w-32 h-32 shrink-0">
                     {{-- Pie segments using stroke-dasharray trick --}}
                     <circle cx="18" cy="18" r="15.9" fill="transparent" stroke="#6366f1" stroke-width="3.8" stroke-dasharray="40 60" stroke-dashoffset="25"/>
@@ -170,7 +170,7 @@
                     <circle cx="18" cy="18" r="15.9" fill="transparent" stroke="#ef4444" stroke-width="3.8" stroke-dasharray="20 80" stroke-dashoffset="-40"/>
                     <circle cx="18" cy="18" r="15.9" fill="transparent" stroke="#d1d5db" stroke-width="3.8" stroke-dasharray="15 85" stroke-dashoffset="-60"/>
                 </svg>
-                <div class="space-y-2 text-sm">
+                <div class="space-y-2 text-sm min-w-0">
                     <div class="flex items-center gap-2"><span class="w-3 h-3 rounded-sm bg-indigo-500 inline-block"></span><span class="text-gray-600">Electronics <span class="text-gray-400">40%</span></span></div>
                     <div class="flex items-center gap-2"><span class="w-3 h-3 rounded-sm bg-yellow-400 inline-block"></span><span class="text-gray-600">Accessories <span class="text-gray-400">25%</span></span></div>
                     <div class="flex items-center gap-2"><span class="w-3 h-3 rounded-sm bg-red-400 inline-block"></span><span class="text-gray-600">Peripherals <span class="text-gray-400">20%</span></span></div>
@@ -191,10 +191,10 @@
             </div>
             <div class="divide-y divide-gray-100">
                 @forelse ($recentCustomers as $customer)
-                    <div class="px-5 py-3 flex items-center justify-between">
+                    <div class="px-5 py-3 flex items-start justify-between gap-3">
                         <div>
                             <p class="text-sm font-medium text-gray-800">{{ $customer->first_name }} {{ $customer->last_name }}</p>
-                            <p class="text-xs text-gray-400">{{ $customer->email }}</p>
+                            <p class="text-xs text-gray-400 break-all">{{ $customer->email }}</p>
                         </div>
                         @if ($customer->is_active)
                             <span class="text-xs bg-green-50 text-green-700 border border-green-200 px-2 py-0.5 rounded-full">Active</span>

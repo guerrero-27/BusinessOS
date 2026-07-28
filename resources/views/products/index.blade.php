@@ -53,21 +53,21 @@
                 <input type="text" name="search" value="{{ request('search') }}" placeholder="Name, SKU, barcode..."
                     class="w-full sm:w-48 border-gray-300 rounded-lg shadow-sm text-sm focus:ring-indigo-500 focus:border-indigo-500">
 
-                <select name="category" class="border-gray-300 rounded-lg shadow-sm text-sm focus:ring-indigo-500 focus:border-indigo-500">
+                <select name="category" class="w-full sm:w-auto border-gray-300 rounded-lg shadow-sm text-sm focus:ring-indigo-500 focus:border-indigo-500">
                     <option value="">All Categories</option>
                     @foreach ($categories as $cat)
                         <option value="{{ $cat->id }}" @selected(request('category') == $cat->id)>{{ $cat->name }}</option>
                     @endforeach
                 </select>
 
-                <select name="status" class="border-gray-300 rounded-lg shadow-sm text-sm focus:ring-indigo-500 focus:border-indigo-500">
+                <select name="status" class="w-full sm:w-auto border-gray-300 rounded-lg shadow-sm text-sm focus:ring-indigo-500 focus:border-indigo-500">
                     <option value="">All Status</option>
                     @foreach (['active', 'inactive', 'draft', 'archived'] as $s)
                         <option value="{{ $s }}" @selected(request('status') === $s)>{{ ucfirst($s) }}</option>
                     @endforeach
                 </select>
 
-                <select name="stock_status" class="border-gray-300 rounded-lg shadow-sm text-sm focus:ring-indigo-500 focus:border-indigo-500">
+                <select name="stock_status" class="w-full sm:w-auto border-gray-300 rounded-lg shadow-sm text-sm focus:ring-indigo-500 focus:border-indigo-500">
                     <option value="">All Stock</option>
                     <option value="in_stock" @selected(request('stock_status') === 'in_stock')>In Stock</option>
                     <option value="low_stock" @selected(request('stock_status') === 'low_stock')>Low Stock</option>

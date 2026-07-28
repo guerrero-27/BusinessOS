@@ -14,22 +14,49 @@
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
-    <body class="bg-gray-100">
-        
+    <body class="bg-gray-100 overflow-x-hidden">
         <div class="flex min-h-screen">
-
             <x-sidebar/>
 
-            <div class="flex flex-1 flex-col">
-                
+            <div class="flex min-h-screen flex-1 flex-col">
                 <x-navbar/>
 
-                <main class="p-8">
+                <main class="p-4 sm:p-6 lg:p-8">
                     {{ $slot }}
                 </main>
             </div>
-            
         </div>
 
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                const sidebar = document.getElementById('app-sidebar');
+                const backdrop = document.getElementById('sidebar-backdrop');
+                const closeButton = document.getElementById('close-sidebar-btn');
+
+                if (!sidebar || !backdrop) return;
+
+                const openSidebar = function () {
+                    sidebar.classList.remove('-translate-x-full');
+                    backdrop.classList.remove('hidden');
+                    document.body.classList.add('overflow-hidden');
+                };
+
+                const closeSidebar = function () {
+                    sidebar.classList.add('-translate-x-full');
+                    backdrop.classList.add('hidden');
+                    document.body.classList.remove('overflow-hidden');
+                };
+
+                window.addEventListener('toggle-sidebar', openSidebar);
+                backdrop.addEventListener('click', closeSidebar);
+                closeButton?.addEventListener('click', closeSidebar);
+                window.addEventListener('resize', function () {
+                    if (window.innerWidth >= 1024) {
+                        backdrop.classList.add('hidden');
+                        document.body.classList.remove('overflow-hidden');
+                    }
+                });
+            });
+        </script>
     </body>
 </html>

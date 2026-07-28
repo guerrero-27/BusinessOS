@@ -1,6 +1,12 @@
-<header class="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-6 gap-4">
+<header class="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-4 sm:px-6 gap-3 sm:gap-4">
 
-    <div class="flex-1 max-w-sm">
+    <button type="button" class="lg:hidden inline-flex items-center justify-center rounded-lg p-2 text-gray-500 hover:bg-gray-100 hover:text-gray-700 transition" aria-label="Open sidebar" onclick="window.dispatchEvent(new CustomEvent('toggle-sidebar'))">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+        </svg>
+    </button>
+
+    <div class="flex-1 max-w-sm hidden sm:block">
         <div class="relative">
             <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-4.35-4.35M17 11A6 6 0 1 1 5 11a6 6 0 0 1 12 0z"/>
@@ -9,7 +15,7 @@
         </div>
     </div>
 
-    <div class="flex items-center gap-2">
+    <div class="flex items-center gap-1 sm:gap-2">
         {{-- Notifications --}}
         <button class="relative p-2 rounded-lg text-gray-500 hover:bg-gray-100 hover:text-gray-700 transition">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -18,7 +24,7 @@
         </button>
 
         {{-- Divider --}}
-        <div class="w-px h-6 bg-gray-200"></div>
+        <div class="hidden sm:block w-px h-6 bg-gray-200"></div>
 
         {{-- User --}}
         <div class="flex items-center gap-2.5 pl-1">
