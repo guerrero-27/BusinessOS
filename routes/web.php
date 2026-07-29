@@ -8,6 +8,7 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\InventoryController;
 use App\Http\Controllers\SkuPreviewController;
 use App\Http\Controllers\SupplierController;
+use App\Http\Controllers\ReportsController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -21,6 +22,7 @@ Route::get('/inventory', [InventoryController::class, 'index'])->name('inventory
 Route::post('/inventory', [InventoryController::class, 'store'])->name('inventory.store');
 Route::get('/inventory/barcode/{product}', [InventoryController::class, 'barcodeLabel'])->name('inventory.barcode');
 Route::get('/products/sku-preview', [SkuPreviewController::class, '__invoke'])->name('products.sku-preview');
+Route::get('/reports', [ReportsController::class, 'index'])->middleware(['auth', 'verified'])->name('reports.index');
 
 Route::get('/dashboard', function () {
     $customerStats = [
