@@ -9,5 +9,5 @@ it('shows the reports dashboard for authenticated users', function () {
 
     $response->assertOk()
         ->assertSee('Reports')
-        ->assertSee('Inventory movement');
+        ->assertSee('Inventory Movement');
 });

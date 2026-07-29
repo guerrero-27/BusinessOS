@@ -12,6 +12,8 @@ class ReportsController extends Controller
 {
     public function index(Request $request)
     {
+        $filters = $request->only(['type', 'date_from', 'date_to']);
+
         $movementQuery = InventoryMovement::query()->with(['product', 'user'])
             ->when($request->filled('type'), function ($query) use ($request) {
                 $query->where('type', $request->type);
@@ -46,6 +48,18 @@ class ReportsController extends Controller
             ->take(5)
             ->get();
 
-        return view('reports.index', compact('movements', 'summary', 'recentCustomers', 'lowStockProducts'));
+        // Movement volume for the last 7 days, used to draw the trend chart.
+        $trendDays = collect(range(6, 0))->map(fn ($daysAgo) => now()->subDays($daysAgo)->toDateString());
+        $movementTrend = $trendDays->map(function ($date) {
+            return [
+                'date'  => $date,
+                'label' => \Illuminate\Support\Carbon::parse($date)->format('D'),
+                'count' => InventoryMovement::whereDate('created_at', $date)->count(),
+            ];
+        });
+
+        return view('reports.index', compact(
+            'movements', 'summary', 'recentCustomers', 'lowStockProducts', 'filters', 'movementTrend'
+        ));
     }
 }
