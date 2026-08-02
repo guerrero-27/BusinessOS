@@ -2,10 +2,10 @@
     <div>
         <p class="inline-flex items-center rounded-full bg-white px-3 py-1 text-xs font-semibold tracking-wide text-[#6B7280] ring-1 ring-black/5">BusinessOS Operations Hub</p>
         <h1 class="mt-5 text-4xl font-bold leading-tight text-[#111111] sm:text-5xl lg:text-6xl">
-            Manage customers, products, and stock in one workspace
+            Everything in One Place.
         </h1>
         <p class="mt-5 max-w-xl text-base leading-7 text-[#6B7280]">
-            Built with Laravel 12, BusinessOS centralizes customer records, product cataloging, supplier management, and inventory movement tracking with searchable references.
+            Manage customers, products, suppliers, and inventory in one powerful platform.
         </p>
 
         <a href="#about" class="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-[#111111] transition hover:text-[#4CAF50]">

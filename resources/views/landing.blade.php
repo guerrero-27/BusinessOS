@@ -38,22 +38,7 @@
 
             <section id="about" class="container mx-auto grid gap-12 px-4 py-10 sm:px-6 md:grid-cols-2 md:items-center lg:px-8">
                 <div class="flex justify-center">
-                    <div class="relative h-80 w-80">
-                        <div class="absolute left-1/2 top-1/2 h-20 w-20 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#111111] text-white flex items-center justify-center font-bold">BO</div>
-                        <div class="absolute left-1/2 top-1/2 h-56 w-56 -translate-x-1/2 -translate-y-1/2 rounded-full border border-black/10"></div>
-
-                        <span class="absolute left-1/2 top-2 h-12 w-12 -translate-x-1/2 rounded-full bg-white ring-1 ring-black/10"></span>
-                        <span class="absolute right-6 top-16 h-12 w-12 rounded-full bg-white ring-1 ring-black/10"></span>
-                        <span class="absolute right-7 bottom-16 h-12 w-12 rounded-full bg-white ring-1 ring-black/10"></span>
-                        <span class="absolute left-1/2 bottom-2 h-12 w-12 -translate-x-1/2 rounded-full bg-white ring-1 ring-black/10"></span>
-                        <span class="absolute left-6 top-16 h-12 w-12 rounded-full bg-white ring-1 ring-black/10"></span>
-
-                        <div class="absolute left-1/2 top-1/2 h-px w-24 -translate-y-16 -rotate-90 bg-black/15"></div>
-                        <div class="absolute left-1/2 top-1/2 h-px w-24 -translate-x-1 rotate-[-35deg] bg-black/15"></div>
-                        <div class="absolute left-1/2 top-1/2 h-px w-24 translate-x-2 rotate-[35deg] bg-black/15"></div>
-                        <div class="absolute left-1/2 top-1/2 h-px w-24 translate-y-16 rotate-90 bg-black/15"></div>
-                        <div class="absolute left-1/2 top-1/2 h-px w-24 -translate-x-3 rotate-[145deg] bg-black/15"></div>
-                    </div>
+                    <x-avatar-network size="lg" />
                 </div>
 
                 <div>
