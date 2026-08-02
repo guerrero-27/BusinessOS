@@ -1,11 +1,11 @@
 <div id="sidebar-backdrop" class="fixed inset-0 z-30 hidden bg-black/40 lg:hidden"></div>
 
-<aside id="app-sidebar" class="fixed inset-y-0 left-0 z-40 w-72 max-w-[85vw] -translate-x-full bg-white border-r border-gray-200 min-h-screen flex flex-col transition-transform duration-200 ease-out lg:static lg:z-auto lg:w-64 lg:max-w-none lg:translate-x-0">
+<aside id="app-sidebar" class="fixed inset-y-0 left-0 z-40 flex min-h-screen w-72 max-w-[85vw] -translate-x-full flex-col border-r border-black/10 bg-white transition-transform duration-200 ease-out lg:static lg:z-auto lg:w-64 lg:max-w-none lg:translate-x-0">
 
     <div class="px-6 py-5 border-b border-gray-100 flex items-start justify-between gap-3">
         <div>
-        <h1 class="text-xl font-bold text-indigo-600 tracking-tight">BusinessOS</h1>
-        <p class="text-xs text-gray-400 mt-0.5">Business Management</p>
+        <h1 class="text-xl font-bold tracking-tight text-[#111111]">BusinessOS</h1>
+        <p class="mt-0.5 text-xs text-[#6B7280]">Business Management</p>
         </div>
         <button id="close-sidebar-btn" type="button" class="lg:hidden inline-flex items-center justify-center rounded-lg p-1.5 text-gray-400 hover:bg-gray-100 hover:text-gray-600 transition" aria-label="Close sidebar">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -30,7 +30,7 @@
             @php $active = request()->is($item['match']); @endphp
             <a href="{{ route($item['route']) }}"
                 class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition
-                    {{ $active ? 'bg-indigo-600 text-white' : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900' }}">
+                    {{ $active ? 'bg-[#111111] text-white' : 'text-gray-600 hover:bg-[#F4F5F7] hover:text-[#111111]' }}">
                 <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="{{ $item['icon'] }}"/>
                 </svg>
@@ -47,7 +47,7 @@
         </div>
 
         <a href="{{ route('reports.index') }}"
-            class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition {{ request()->is('reports*') ? 'bg-indigo-600 text-white' : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900' }}">
+            class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition {{ request()->is('reports*') ? 'bg-[#111111] text-white' : 'text-gray-600 hover:bg-[#F4F5F7] hover:text-[#111111]' }}">
             <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
             </svg>

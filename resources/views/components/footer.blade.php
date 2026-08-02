@@ -8,7 +8,7 @@
                             <path d="M12 2 22 20 12 15 2 20Z" />
                         </svg>
                     </span>
-                    <span class="text-lg font-bold">Patungans</span>
+                    <span class="text-lg font-bold">BusinessOS</span>
                 </div>
                 <p class="mt-3 max-w-xs text-sm leading-6 text-white/70">BusinessOS-powered planning for teams that grow better together.</p>
             </div>
@@ -47,7 +47,7 @@
         </div>
 
         <div class="mt-10 border-t border-white/10 pt-5 text-center text-xs text-white/60">
-            &copy; {{ now()->year }} Patungans. All rights reserved.
+            &copy; {{ now()->year }} BusinessOS. All rights reserved.
         </div>
     </div>
 </footer>

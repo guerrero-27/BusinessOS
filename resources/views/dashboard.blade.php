@@ -1,10 +1,10 @@
 <x-app-layout>
 
     {{-- Header --}}
-    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-6">
+    <div class="mb-6 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
         <div>
-            <h1 class="text-xl font-semibold text-gray-800">Welcome back, {{ auth()->user()->name }} 👋</h1>
-            <p class="text-sm text-gray-400 mt-0.5">
+            <h1 class="text-xl font-semibold text-[#111111]">Welcome back, {{ auth()->user()->name }} 👋</h1>
+            <p class="mt-0.5 text-sm text-[#6B7280]">
                 {{ now()->format('l, F j, Y') }}
                 &nbsp;·&nbsp;
                 Last login: {{ now()->format('g:i A') }}
@@ -12,85 +12,85 @@
         </div>
         {{-- Quick Actions --}}
         <div class="flex flex-wrap gap-2">
-            <a href="{{ route('customers.create') }}" class="inline-flex items-center gap-1 px-3 py-1.5 bg-indigo-600 text-white text-xs font-medium rounded-lg hover:bg-indigo-700 transition">
+            <a href="{{ route('customers.create') }}" class="inline-flex items-center gap-1 rounded-full bg-[#111111] px-3 py-2 text-xs font-medium text-white transition hover:bg-black">
                 + Add Customer
             </a>
-            <a href="{{ route('products.index') }}" class="inline-flex items-center gap-1 px-3 py-1.5 bg-white border border-gray-200 text-gray-700 text-xs font-medium rounded-lg hover:bg-gray-50 transition">
+            <a href="{{ route('products.index') }}" class="inline-flex items-center gap-1 rounded-full border border-black/10 bg-white px-3 py-2 text-xs font-medium text-gray-700 transition hover:bg-[#F4F5F7]">
                 + Add Product
             </a>
-            <a href="{{ route('inventory.index') }}" class="inline-flex items-center gap-1 px-3 py-1.5 bg-white border border-gray-200 text-gray-700 text-xs font-medium rounded-lg hover:bg-gray-50 transition">
+            <a href="{{ route('inventory.index') }}" class="inline-flex items-center gap-1 rounded-full border border-black/10 bg-white px-3 py-2 text-xs font-medium text-gray-700 transition hover:bg-[#F4F5F7]">
                 Adjust Stock
             </a>
         </div>
     </div>
 
     {{-- KPI Row 1: Customers --}}
-    <p class="text-xs font-semibold text-gray-400 uppercase tracking-widest mb-2">Customers</p>
+    <p class="mb-2 text-xs font-semibold uppercase tracking-widest text-[#6B7280]">Customers</p>
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
-        <div class="bg-white border border-gray-200 rounded-lg p-4 shadow-sm">
-            <p class="text-xs text-gray-400 uppercase tracking-wide">Total Customers</p>
+        <div class="rounded-2xl border border-black/10 bg-white p-4 shadow-sm">
+            <p class="text-xs uppercase tracking-wide text-gray-400">Total Customers</p>
             <p class="text-2xl font-bold text-gray-800 mt-1">{{ $customerStats['total'] }}</p>
         </div>
-        <div class="bg-white border border-gray-200 rounded-lg p-4 shadow-sm">
+        <div class="rounded-2xl border border-black/10 bg-white p-4 shadow-sm">
             <p class="text-xs text-gray-400 uppercase tracking-wide">Active</p>
-            <p class="text-2xl font-bold text-green-600 mt-1">{{ $customerStats['active'] }}</p>
+            <p class="mt-1 text-2xl font-bold text-[#2f7b35]">{{ $customerStats['active'] }}</p>
         </div>
-        <div class="bg-white border border-gray-200 rounded-lg p-4 shadow-sm">
+        <div class="rounded-2xl border border-black/10 bg-white p-4 shadow-sm">
             <p class="text-xs text-gray-400 uppercase tracking-wide">Inactive</p>
             <p class="text-2xl font-bold text-gray-400 mt-1">{{ $customerStats['inactive'] }}</p>
         </div>
-        <div class="bg-white border border-gray-200 rounded-lg p-4 shadow-sm">
+        <div class="rounded-2xl border border-black/10 bg-white p-4 shadow-sm">
             <p class="text-xs text-gray-400 uppercase tracking-wide">New This Month</p>
-            <p class="text-2xl font-bold text-indigo-600 mt-1">{{ $customerStats['new'] }}</p>
+            <p class="mt-1 text-2xl font-bold text-[#111111]">{{ $customerStats['new'] }}</p>
         </div>
     </div>
 
     {{-- KPI Row 2: Inventory --}}
-    <p class="text-xs font-semibold text-gray-400 uppercase tracking-widest mb-2">Inventory</p>
+    <p class="mb-2 text-xs font-semibold uppercase tracking-widest text-[#6B7280]">Inventory</p>
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
-        <div class="bg-white border border-gray-200 rounded-lg p-4 shadow-sm">
+        <div class="rounded-2xl border border-black/10 bg-white p-4 shadow-sm">
             <p class="text-xs text-gray-400 uppercase tracking-wide">Total Products</p>
             <p class="text-2xl font-bold text-gray-800 mt-1">{{ $inventoryStats['total'] }}</p>
         </div>
-        <div class="bg-white border border-gray-200 rounded-lg p-4 shadow-sm">
+        <div class="rounded-2xl border border-black/10 bg-white p-4 shadow-sm">
             <p class="text-xs text-gray-400 uppercase tracking-wide">Low Stock</p>
             <p class="text-2xl font-bold text-yellow-500 mt-1">{{ $inventoryStats['low_stock'] }}</p>
         </div>
-        <div class="bg-white border border-gray-200 rounded-lg p-4 shadow-sm">
+        <div class="rounded-2xl border border-black/10 bg-white p-4 shadow-sm">
             <p class="text-xs text-gray-400 uppercase tracking-wide">Out of Stock</p>
             <p class="text-2xl font-bold text-red-500 mt-1">{{ $inventoryStats['out_of_stock'] }}</p>
         </div>
-        <div class="bg-white border border-gray-200 rounded-lg p-4 shadow-sm">
+        <div class="rounded-2xl border border-black/10 bg-white p-4 shadow-sm">
             <p class="text-xs text-gray-400 uppercase tracking-wide">Categories</p>
             <p class="text-2xl font-bold text-gray-800 mt-1">{{ \App\Models\Category::where('is_active', true)->count() }}</p>
         </div>
     </div>
 
     {{-- KPI Row 3: Finance --}}
-    <p class="text-xs font-semibold text-gray-400 uppercase tracking-widest mb-2">Finance</p>
+    <p class="mb-2 text-xs font-semibold uppercase tracking-widest text-[#6B7280]">Finance</p>
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-        <div class="bg-white border border-gray-200 rounded-lg p-4 shadow-sm">
+        <div class="rounded-2xl border border-black/10 bg-white p-4 shadow-sm">
             <p class="text-xs text-gray-400 uppercase tracking-wide">Today's Sales</p>
             <p class="text-2xl font-bold text-gray-800 mt-1">—</p>
         </div>
-        <div class="bg-white border border-gray-200 rounded-lg p-4 shadow-sm">
+        <div class="rounded-2xl border border-black/10 bg-white p-4 shadow-sm">
             <p class="text-xs text-gray-400 uppercase tracking-wide">Monthly Revenue</p>
-            <p class="text-2xl font-bold text-green-600 mt-1">—</p>
+            <p class="text-2xl font-bold text-[#2f7b35] mt-1">—</p>
         </div>
-        <div class="bg-white border border-gray-200 rounded-lg p-4 shadow-sm">
+        <div class="rounded-2xl border border-black/10 bg-white p-4 shadow-sm">
             <p class="text-xs text-gray-400 uppercase tracking-wide">Expenses</p>
             <p class="text-2xl font-bold text-red-500 mt-1">—</p>
         </div>
-        <div class="bg-white border border-gray-200 rounded-lg p-4 shadow-sm">
+        <div class="rounded-2xl border border-black/10 bg-white p-4 shadow-sm">
             <p class="text-xs text-gray-400 uppercase tracking-wide">Net Profit</p>
-            <p class="text-2xl font-bold text-indigo-600 mt-1">—</p>
+            <p class="text-2xl font-bold text-[#111111] mt-1">—</p>
         </div>
     </div>
 
     {{-- Charts Row --}}
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-8">
         {{-- Customer Growth --}}
-        <div class="bg-white border border-gray-200 rounded-lg p-5 shadow-sm">
+        <div class="rounded-2xl border border-black/10 bg-white p-5 shadow-sm">
             <p class="text-sm font-semibold text-gray-700 mb-4">Customer Growth</p>
             <div class="h-40 flex items-end gap-2">
                 @php
@@ -100,7 +100,7 @@
                 @endphp
                 @foreach ($months as $i => $month)
                     <div class="flex-1 flex flex-col items-center gap-1">
-                        <div class="w-full bg-indigo-500 rounded-t" style="height: {{ round(($values[$i] / $max) * 100) }}%"></div>
+                        <div class="w-full rounded-t bg-[#4CAF50]" style="height: {{ round(($values[$i] / $max) * 100) }}%"></div>
                         <span class="text-xs text-gray-400">{{ $month }}</span>
                     </div>
                 @endforeach
@@ -108,7 +108,7 @@
         </div>
 
         {{-- Sales vs Expenses --}}
-        <div class="bg-white border border-gray-200 rounded-lg p-5 shadow-sm">
+        <div class="rounded-2xl border border-black/10 bg-white p-5 shadow-sm">
             <p class="text-sm font-semibold text-gray-700 mb-4">Sales vs Expenses</p>
             <div class="h-40 flex items-end gap-3">
                 @php
@@ -119,7 +119,7 @@
                 @foreach ($months as $i => $month)
                     <div class="flex-1 flex flex-col items-center gap-1">
                         <div class="w-full flex items-end gap-0.5" style="height: 100%;">
-                            <div class="flex-1 bg-indigo-400 rounded-t" style="height: {{ round(($salesData[$i] / $barMax) * 100) }}%"></div>
+                            <div class="flex-1 rounded-t bg-[#7ED957]" style="height: {{ round(($salesData[$i] / $barMax) * 100) }}%"></div>
                             <div class="flex-1 bg-red-300 rounded-t" style="height: {{ round(($expenseData[$i] / $barMax) * 100) }}%"></div>
                         </div>
                         <span class="text-xs text-gray-400">{{ $month }}</span>
@@ -127,13 +127,13 @@
                 @endforeach
             </div>
             <div class="flex flex-wrap gap-3 mt-3">
-                <span class="flex items-center gap-1 text-xs text-gray-500"><span class="w-2.5 h-2.5 rounded-sm bg-indigo-400 inline-block"></span> Sales</span>
+                <span class="flex items-center gap-1 text-xs text-gray-500"><span class="inline-block h-2.5 w-2.5 rounded-sm bg-[#7ED957]"></span> Sales</span>
                 <span class="flex items-center gap-1 text-xs text-gray-500"><span class="w-2.5 h-2.5 rounded-sm bg-red-300 inline-block"></span> Expenses</span>
             </div>
         </div>
 
         {{-- Monthly Revenue --}}
-        <div class="bg-white border border-gray-200 rounded-lg p-5 shadow-sm">
+        <div class="rounded-2xl border border-black/10 bg-white p-5 shadow-sm">
             <p class="text-sm font-semibold text-gray-700 mb-4">Monthly Revenue</p>
             <div class="relative h-40">
                 @php
@@ -148,8 +148,8 @@
                     $areaPoints = "0,100 " . $svgPoints . " 100,100";
                 @endphp
                 <svg viewBox="0 0 100 100" preserveAspectRatio="none" class="w-full h-full">
-                    <polygon points="{{ $areaPoints }}" fill="#e0e7ff" />
-                    <polyline points="{{ $svgPoints }}" fill="none" stroke="#6366f1" stroke-width="2" vector-effect="non-scaling-stroke"/>
+                    <polygon points="{{ $areaPoints }}" fill="#EAF8E5" />
+                    <polyline points="{{ $svgPoints }}" fill="none" stroke="#4CAF50" stroke-width="2" vector-effect="non-scaling-stroke"/>
                 </svg>
                 <div class="absolute bottom-0 left-0 right-0 flex justify-between px-1">
                     @foreach ($months as $month)
@@ -160,7 +160,7 @@
         </div>
 
         {{-- Inventory Distribution --}}
-        <div class="bg-white border border-gray-200 rounded-lg p-5 shadow-sm">
+        <div class="rounded-2xl border border-black/10 bg-white p-5 shadow-sm">
             <p class="text-sm font-semibold text-gray-700 mb-4">Inventory Distribution</p>
             <div class="flex flex-col items-center text-center sm:flex-row sm:items-center sm:text-left gap-4 sm:gap-6">
                 <svg viewBox="0 0 36 36" class="w-32 h-32 shrink-0">
@@ -171,7 +171,7 @@
                     <circle cx="18" cy="18" r="15.9" fill="transparent" stroke="#d1d5db" stroke-width="3.8" stroke-dasharray="15 85" stroke-dashoffset="-60"/>
                 </svg>
                 <div class="space-y-2 text-sm min-w-0 w-full sm:w-auto">
-                    <div class="flex items-center justify-center sm:justify-start gap-2"><span class="w-3 h-3 rounded-sm bg-indigo-500 inline-block"></span><span class="text-gray-600">Electronics <span class="text-gray-400">40%</span></span></div>
+                    <div class="flex items-center justify-center sm:justify-start gap-2"><span class="inline-block h-3 w-3 rounded-sm bg-[#4CAF50]"></span><span class="text-gray-600">Electronics <span class="text-gray-400">40%</span></span></div>
                     <div class="flex items-center justify-center sm:justify-start gap-2"><span class="w-3 h-3 rounded-sm bg-yellow-400 inline-block"></span><span class="text-gray-600">Accessories <span class="text-gray-400">25%</span></span></div>
                     <div class="flex items-center justify-center sm:justify-start gap-2"><span class="w-3 h-3 rounded-sm bg-red-400 inline-block"></span><span class="text-gray-600">Peripherals <span class="text-gray-400">20%</span></span></div>
                     <div class="flex items-center justify-center sm:justify-start gap-2"><span class="w-3 h-3 rounded-sm bg-gray-300 inline-block"></span><span class="text-gray-600">Others <span class="text-gray-400">15%</span></span></div>
@@ -184,10 +184,10 @@
     <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 mb-8">
 
         {{-- Recent Customers --}}
-        <div class="bg-white border border-gray-200 rounded-lg shadow-sm overflow-hidden">
+        <div class="overflow-hidden rounded-2xl border border-black/10 bg-white shadow-sm">
             <div class="px-5 py-3 border-b border-gray-100 flex items-center justify-between">
                 <p class="text-sm font-semibold text-gray-700">Recent Customers</p>
-                <a href="{{ route('customers.index') }}" class="text-xs text-indigo-600 hover:text-indigo-800 font-medium">View all →</a>
+                <a href="{{ route('customers.index') }}" class="text-xs font-medium text-[#2f7b35] hover:text-[#1f5a25]">View all →</a>
             </div>
             <div class="divide-y divide-gray-100">
                 @forelse ($recentCustomers as $customer)
@@ -204,17 +204,17 @@
                     </div>
                 @empty
                     <div class="px-5 py-6 text-center text-sm text-gray-400">
-                        No customers yet. <a href="{{ route('customers.create') }}" class="text-indigo-600 hover:underline">Add one</a>
+                        No customers yet. <a href="{{ route('customers.create') }}" class="text-[#2f7b35] hover:underline">Add one</a>
                     </div>
                 @endforelse
             </div>
         </div>
 
         {{-- Low Stock Products --}}
-        <div class="bg-white border border-gray-200 rounded-lg shadow-sm overflow-hidden">
+        <div class="overflow-hidden rounded-2xl border border-black/10 bg-white shadow-sm">
             <div class="px-5 py-3 border-b border-gray-100 flex items-center justify-between">
                 <p class="text-sm font-semibold text-gray-700">Low Stock Products</p>
-                <a href="{{ route('inventory.index') }}" class="text-xs text-indigo-600 hover:text-indigo-800 font-medium">View all →</a>
+                <a href="{{ route('inventory.index') }}" class="text-xs font-medium text-[#2f7b35] hover:text-[#1f5a25]">View all →</a>
             </div>
             <div class="divide-y divide-gray-100">
                 @forelse ($lowStockProducts as $product)
@@ -234,7 +234,7 @@
         </div>
 
         {{-- Recent Activities --}}
-        <div class="bg-white border border-gray-200 rounded-lg shadow-sm overflow-hidden">
+        <div class="overflow-hidden rounded-2xl border border-black/10 bg-white shadow-sm">
             <div class="px-5 py-3 border-b border-gray-100">
                 <p class="text-sm font-semibold text-gray-700">Recent Activities</p>
             </div>
@@ -265,7 +265,7 @@
         </div>
 
         {{-- Upcoming Tasks --}}
-        <div class="bg-white border border-gray-200 rounded-lg shadow-sm overflow-hidden">
+        <div class="overflow-hidden rounded-2xl border border-black/10 bg-white shadow-sm">
             <div class="px-5 py-3 border-b border-gray-100">
                 <p class="text-sm font-semibold text-gray-700">Upcoming Tasks</p>
             </div>
@@ -290,7 +290,7 @@
         </div>
 
         {{-- Calendar / Today's Events --}}
-        <div class="bg-white border border-gray-200 rounded-lg shadow-sm overflow-hidden">
+        <div class="overflow-hidden rounded-2xl border border-black/10 bg-white shadow-sm">
             <div class="px-5 py-3 border-b border-gray-100 flex items-center justify-between">
                 <p class="text-sm font-semibold text-gray-700">Today's Events</p>
                 <span class="text-xs text-gray-400">{{ now()->format('M j, Y') }}</span>
@@ -310,14 +310,14 @@
                         <div class="flex-1 min-w-0">
                             <p class="text-sm text-gray-700 truncate">{{ $event['title'] }}</p>
                         </div>
-                        <span class="text-xs text-indigo-500 bg-indigo-50 border border-indigo-100 px-2 py-0.5 rounded-full shrink-0">{{ $event['type'] }}</span>
+                        <span class="shrink-0 rounded-full border border-[#d8ebd0] bg-[#eef8e8] px-2 py-0.5 text-xs text-[#2f7b35]">{{ $event['type'] }}</span>
                     </div>
                 @endforeach
             </div>
         </div>
 
         {{-- System Overview --}}
-        <div class="bg-white border border-gray-200 rounded-lg shadow-sm overflow-hidden">
+        <div class="overflow-hidden rounded-2xl border border-black/10 bg-white shadow-sm">
             <div class="px-5 py-3 border-b border-gray-100">
                 <p class="text-sm font-semibold text-gray-700">System Overview</p>
             </div>
@@ -334,7 +334,7 @@
                     <p class="text-sm text-gray-600">Storage Used</p>
                     <div class="flex items-center gap-2">
                         <div class="w-20 h-1.5 bg-gray-100 rounded-full overflow-hidden">
-                            <div class="h-full bg-indigo-500 rounded-full" style="width: 42%"></div>
+                            <div class="h-full rounded-full bg-[#4CAF50]" style="width: 42%"></div>
                         </div>
                         <span class="text-xs text-gray-400">42%</span>
                     </div>
