@@ -12,7 +12,18 @@ export default {
     theme: {
         extend: {
             fontFamily: {
-                sans: ['Figtree', ...defaultTheme.fontFamily.sans],
+                sans: ['Plus Jakarta Sans', 'Figtree', ...defaultTheme.fontFamily.sans],
+            },
+            colors: {
+                patungans: {
+                    bg: '#F4F5F7',
+                    dark: '#111111',
+                    text: '#1A1A1A',
+                    muted: '#6B7280',
+                    accentFrom: '#7ED957',
+                    accentTo: '#4CAF50',
+                    card: '#FFFFFF',
+                },
             },
         },
     },

@@ -19,7 +19,7 @@
             <x-sidebar/>
 
             <div class="flex min-h-screen flex-1 flex-col">
-                <x-navbar/>
+                <x-dashboard-navbar/>
 
                 <main class="p-4 pt-20 sm:p-6 sm:pt-20 lg:p-8 lg:pt-8">
                     {{ $slot }}
