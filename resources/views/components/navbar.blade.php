@@ -6,7 +6,7 @@
                     <path d="M12 2 22 20 12 15 2 20Z" />
                 </svg>
             </span>
-            <span class="text-lg font-bold tracking-tight text-[#111111]">Patungans</span>
+            <span class="text-lg font-bold tracking-tight text-[#111111]">BusinessOS</span>
         </a>
 
         <div class="hidden items-center gap-7 md:flex">
