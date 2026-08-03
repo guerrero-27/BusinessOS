@@ -6,18 +6,18 @@
     @endif
 
     <div class="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-        <h1 class="text-xl font-semibold text-gray-800">Categories</h1>
+        <h1 class="text-xl font-semibold text-[#111111]">Categories</h1>
         <button onclick="document.getElementById('modal-create').classList.remove('hidden')"
-            class="inline-flex items-center justify-center gap-1 bg-indigo-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-indigo-700 transition sm:w-auto">
+            class="inline-flex items-center justify-center gap-1 rounded-lg border border-[#111111] bg-[#111111] px-4 py-2 text-sm font-medium text-white transition hover:bg-black sm:w-auto">
             + Add Category
         </button>
     </div>
 
-    <div class="bg-white border border-gray-200 rounded-lg shadow-sm overflow-hidden">
+    <div class="overflow-hidden rounded-2xl border border-black/10 bg-white shadow-sm">
         {{-- Desktop --}}
         <div class="hidden sm:block overflow-x-auto">
             <table class="w-full text-sm text-left">
-                <thead class="bg-gray-50 border-b border-gray-200 text-gray-500 uppercase text-xs tracking-wide">
+                <thead class="bg-[#F4F5F7] border-b border-black/10 text-[#6B7280] uppercase text-xs tracking-wide">
                     <tr>
                         <th class="px-5 py-3">#</th>
                         <th class="px-5 py-3">Name</th>
@@ -29,7 +29,7 @@
                 </thead>
                 <tbody class="divide-y divide-gray-100">
                     @forelse ($categories as $category)
-                        <tr class="hover:bg-gray-50 transition">
+                        <tr class="transition hover:bg-[#F4F5F7]">
                             <td class="px-5 py-3 text-gray-400">{{ $loop->iteration }}</td>
                             <td class="px-5 py-3 font-medium text-gray-800">{{ $category->name }}</td>
                             <td class="px-5 py-3 text-gray-400 font-mono text-xs">{{ $category->slug }}</td>
@@ -44,7 +44,7 @@
                             <td class="px-5 py-3 text-right">
                                 <div class="flex justify-end items-center gap-3">
                                     <button onclick="openEdit({{ $category->id }})"
-                                        class="text-indigo-600 hover:text-indigo-800 text-sm font-medium">Edit</button>
+                                        class="text-[#2f7b35] hover:text-[#1f5a25] text-sm font-medium">Edit</button>
                                     <form action="{{ route('categories.destroy', $category) }}" method="POST"
                                         onsubmit="return confirm('Delete this category?');" class="inline">
                                         @csrf
@@ -59,7 +59,7 @@
                             <td colspan="6" class="text-center text-gray-400 py-10 text-sm">
                                 No categories yet.
                                 <button onclick="document.getElementById('modal-create').classList.remove('hidden')"
-                                    class="text-indigo-600 hover:underline ml-1">Add one</button>
+                                    class="ml-1 text-[#2f7b35] hover:underline">Add one</button>
                             </td>
                         </tr>
                     @endforelse
@@ -84,7 +84,7 @@
                         @endif
                     </div>
                     <div class="flex gap-4 mt-3">
-                        <button onclick="openEdit({{ $category->id }})" class="text-indigo-600 text-sm font-medium">Edit</button>
+                        <button onclick="openEdit({{ $category->id }})" class="text-[#2f7b35] hover:text-[#1f5a25] text-sm font-medium">Edit</button>
                         <form action="{{ route('categories.destroy', $category) }}" method="POST"
                             onsubmit="return confirm('Delete this category?');" class="inline">
                             @csrf
@@ -116,7 +116,7 @@
                 <div class="flex justify-end gap-3 pt-2 border-t border-gray-100">
                     <button type="button" onclick="document.getElementById('modal-create').classList.add('hidden')"
                         class="px-4 py-2 text-sm text-gray-600 hover:text-gray-800 transition">Cancel</button>
-                    <button type="submit" class="bg-indigo-600 text-white px-5 py-2 rounded-lg text-sm font-medium hover:bg-indigo-700 transition">
+                    <button type="submit" class="rounded-lg border border-[#111111] bg-[#111111] px-5 py-2 text-sm font-medium text-white transition hover:bg-black">
                         Save
                     </button>
                 </div>
@@ -139,7 +139,7 @@
                     <div class="flex justify-end gap-3 pt-2 border-t border-gray-100">
                         <button type="button" onclick="document.getElementById('modal-edit-{{ $category->id }}').classList.add('hidden')"
                             class="px-4 py-2 text-sm text-gray-600 hover:text-gray-800 transition">Cancel</button>
-                        <button type="submit" class="bg-indigo-600 text-white px-5 py-2 rounded-lg text-sm font-medium hover:bg-indigo-700 transition">
+                        <button type="submit" class="rounded-lg border border-[#111111] bg-[#111111] px-5 py-2 text-sm font-medium text-white transition hover:bg-black">
                             Update
                         </button>
                     </div>

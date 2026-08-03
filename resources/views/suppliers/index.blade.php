@@ -7,15 +7,15 @@
 
     <div class="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-            <h1 class="text-xl font-semibold text-gray-800">Suppliers</h1>
+            <h1 class="text-xl font-semibold text-[#111111]">Suppliers</h1>
             <p class="text-sm text-gray-500 mt-1">Manage supplier records for purchases and vendor relationships.</p>
         </div>
 
         <div class="flex flex-col gap-2 sm:flex-row sm:items-center flex-wrap">
             <form action="{{ route('suppliers.index') }}" method="GET" class="flex flex-wrap gap-2">
                 <input type="text" name="search" value="{{ request('search') }}" placeholder="Search supplier..."
-                    class="w-full sm:w-56 border-gray-300 rounded-lg shadow-sm text-sm focus:ring-indigo-500 focus:border-indigo-500">
-                <button type="submit" class="px-3 py-2 bg-gray-100 border border-gray-300 rounded-lg text-sm text-gray-700 hover:bg-gray-200 transition">
+                    class="w-full sm:w-56 rounded-lg border border-black/10 shadow-sm text-sm focus:border-[#4CAF50] focus:ring-[#4CAF50]">
+                <button type="submit" class="rounded-lg border border-black/10 bg-white px-3 py-2 text-sm text-gray-700 transition hover:bg-[#F4F5F7]">
                     Filter
                 </button>
                 @if (request('search'))
@@ -24,16 +24,16 @@
             </form>
 
             <button onclick="openCreate()"
-                class="inline-flex items-center justify-center gap-1 bg-indigo-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-indigo-700 transition whitespace-nowrap">
+                class="inline-flex items-center justify-center gap-1 rounded-lg border border-[#111111] bg-[#111111] px-4 py-2 text-sm font-medium text-white transition hover:bg-black whitespace-nowrap">
                 + Add Supplier
             </button>
         </div>
     </div>
 
-    <div class="bg-white border border-gray-200 rounded-lg shadow-sm overflow-hidden">
+    <div class="overflow-hidden rounded-2xl border border-black/10 bg-white shadow-sm">
         <div class="hidden sm:block overflow-x-auto">
             <table class="w-full text-sm text-left">
-                <thead class="bg-gray-50 border-b border-gray-200 text-gray-500 uppercase text-xs tracking-wide">
+                <thead class="bg-[#F4F5F7] border-b border-black/10 text-[#6B7280] uppercase text-xs tracking-wide">
                     <tr>
                         <th class="px-5 py-3">Supplier</th>
                         <th class="px-5 py-3">Contact</th>
@@ -45,7 +45,7 @@
                 </thead>
                 <tbody class="divide-y divide-gray-100">
                     @forelse ($suppliers as $supplier)
-                        <tr class="hover:bg-gray-50 transition">
+                        <tr class="transition hover:bg-[#F4F5F7]">
                             <td class="px-5 py-3">
                                 <div class="font-medium text-gray-800">{{ $supplier->name }}</div>
                                 @if ($supplier->tax_id)
@@ -62,7 +62,7 @@
                             </td>
                             <td class="px-5 py-3 text-right">
                                 <div class="flex justify-end items-center gap-3">
-                                    <button onclick="openEdit({{ $supplier->id }})" class="text-indigo-600 hover:text-indigo-800 text-sm font-medium">Edit</button>
+                                    <button onclick="openEdit({{ $supplier->id }})" class="text-[#2f7b35] hover:text-[#1f5a25] text-sm font-medium">Edit</button>
                                     <button onclick="openDelete({{ $supplier->id }}, '{{ addslashes($supplier->name) }}')" class="text-red-500 hover:text-red-700 text-sm font-medium">Delete</button>
                                 </div>
                             </td>
@@ -94,7 +94,7 @@
                         </span>
                     </div>
                     <div class="flex gap-4 mt-3">
-                        <button onclick="openEdit({{ $supplier->id }})" class="text-indigo-600 text-sm font-medium">Edit</button>
+                        <button onclick="openEdit({{ $supplier->id }})" class="text-[#2f7b35] hover:text-[#1f5a25] text-sm font-medium">Edit</button>
                         <button onclick="openDelete({{ $supplier->id }}, '{{ addslashes($supplier->name) }}')" class="text-red-500 text-sm font-medium">Delete</button>
                     </div>
                 </div>
@@ -119,7 +119,7 @@
                 @include('suppliers._form')
                 <div class="flex justify-end gap-3 pt-2 border-t border-gray-100">
                     <button type="button" onclick="document.getElementById('modal-create').classList.add('hidden')" class="px-4 py-2 text-sm text-gray-600 hover:text-gray-800 transition">Cancel</button>
-                    <button type="submit" class="bg-indigo-600 text-white px-5 py-2 rounded-lg text-sm font-medium hover:bg-indigo-700 transition">Save Supplier</button>
+                    <button type="submit" class="rounded-lg border border-[#111111] bg-[#111111] px-5 py-2 text-sm font-medium text-white transition hover:bg-black">Save Supplier</button>
                 </div>
             </form>
         </div>
@@ -160,7 +160,7 @@
                     @include('suppliers._form', ['supplier' => $supplier])
                     <div class="flex justify-end gap-3 pt-2 border-t border-gray-100">
                         <button type="button" onclick="document.getElementById('modal-edit-{{ $supplier->id }}').classList.add('hidden')" class="px-4 py-2 text-sm text-gray-600 hover:text-gray-800 transition">Cancel</button>
-                        <button type="submit" class="bg-indigo-600 text-white px-5 py-2 rounded-lg text-sm font-medium hover:bg-indigo-700 transition">Update Supplier</button>
+                        <button type="submit" class="rounded-lg border border-[#111111] bg-[#111111] px-5 py-2 text-sm font-medium text-white transition hover:bg-black">Update Supplier</button>
                     </div>
                 </form>
             </div>

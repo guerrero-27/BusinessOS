@@ -4,7 +4,7 @@
     <div>
         <label class="block text-sm font-medium text-gray-700 mb-1">Name <span class="text-red-500">*</span></label>
         <input type="text" name="name" value="{{ old('name', $p?->name) }}"
-            class="w-full border-gray-300 rounded-lg shadow-sm text-sm text-gray-900 focus:ring-indigo-500 focus:border-indigo-500">
+            class="w-full rounded-lg border border-black/10 shadow-sm text-sm text-gray-900 focus:border-[#4CAF50] focus:ring-[#4CAF50]">
         @error('name') <p class="text-xs text-red-600 mt-1">{{ $message }}</p> @enderror
     </div>
 
@@ -13,7 +13,7 @@
         <input type="text" name="brand" id="field-brand-{{ $p?->id ?? 'new' }}"
             value="{{ old('brand', $p?->brand) }}"
             placeholder="e.g. Lenovo, Samsung, Generic..."
-            class="w-full border-gray-300 rounded-lg shadow-sm text-sm text-gray-900 focus:ring-indigo-500 focus:border-indigo-500 sku-trigger"
+            class="w-full rounded-lg border border-black/10 shadow-sm text-sm text-gray-900 focus:border-[#4CAF50] focus:ring-[#4CAF50] sku-trigger"
             data-form-id="{{ $p?->id ?? 'new' }}">
         @error('brand') <p class="text-xs text-red-600 mt-1">{{ $message }}</p> @enderror
     </div>
@@ -31,12 +31,12 @@
             </div>
         @else
             {{-- New product: show live preview --}}
-            <div id="sku-preview-new" class="flex items-center gap-2 px-3 py-2 bg-indigo-50 border border-dashed border-indigo-200 rounded-lg transition-all">
-                <svg class="w-4 h-4 text-indigo-300 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div id="sku-preview-new" class="flex items-center gap-2 rounded-lg border border-dashed border-[#BFE7AF] bg-[#EAF8E5] px-3 py-2 transition-all">
+                <svg class="w-4 h-4 text-[#7abf65] shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 20l4-16m2 16l4-16M6 9h14M4 15h14"/>
                 </svg>
-                <span id="sku-preview-text-new" class="text-sm font-mono text-indigo-400 italic">Select category &amp; brand to preview</span>
-                <span class="ml-auto text-xs text-indigo-400 bg-indigo-100 px-2 py-0.5 rounded-full">Auto</span>
+                <span id="sku-preview-text-new" class="text-sm font-mono text-[#4f8a3d] italic">Select category &amp; brand to preview</span>
+                <span class="ml-auto rounded-full bg-[#d8efcd] px-2 py-0.5 text-xs text-[#4f8a3d]">Auto</span>
             </div>
         @endif
     </div>
@@ -50,7 +50,7 @@
                 </svg>
                 <span class="text-sm font-mono text-gray-700">{{ $p->barcode }}</span>
                 <a href="{{ route('inventory.barcode', $p) }}" target="_blank"
-                    class="ml-auto text-xs text-indigo-600 hover:text-indigo-800 font-medium whitespace-nowrap">Print Label →</a>
+                    class="ml-auto whitespace-nowrap text-xs font-medium text-[#2f7b35] hover:text-[#1f5a25]">Print Label →</a>
             </div>
         @else
             <div class="flex items-center gap-2 px-3 py-2 bg-gray-50 border border-dashed border-gray-300 rounded-lg">
@@ -65,7 +65,7 @@
     <div>
         <label class="block text-sm font-medium text-gray-700 mb-1">Category</label>
         <select name="category_id" id="field-category-{{ $p?->id ?? 'new' }}"
-            class="w-full border-gray-300 rounded-lg shadow-sm text-sm text-gray-900 focus:ring-indigo-500 focus:border-indigo-500 sku-trigger"
+            class="w-full rounded-lg border border-black/10 shadow-sm text-sm text-gray-900 focus:border-[#4CAF50] focus:ring-[#4CAF50] sku-trigger"
             data-form-id="{{ $p?->id ?? 'new' }}">
             <option value="">— None —</option>
             @foreach ($categories as $cat)
@@ -78,27 +78,27 @@
     <div>
         <label class="block text-sm font-medium text-gray-700 mb-1">Cost Price <span class="text-red-500">*</span></label>
         <input type="number" name="cost_price" value="{{ old('cost_price', $p?->cost_price) }}" step="0.01" min="0"
-            class="w-full border-gray-300 rounded-lg shadow-sm text-sm text-gray-900 focus:ring-indigo-500 focus:border-indigo-500">
+            class="w-full rounded-lg border border-black/10 shadow-sm text-sm text-gray-900 focus:border-[#4CAF50] focus:ring-[#4CAF50]">
         @error('cost_price') <p class="text-xs text-red-600 mt-1">{{ $message }}</p> @enderror
     </div>
 
     <div>
         <label class="block text-sm font-medium text-gray-700 mb-1">Selling Price <span class="text-red-500">*</span></label>
         <input type="number" name="selling_price" value="{{ old('selling_price', $p?->selling_price) }}" step="0.01" min="0"
-            class="w-full border-gray-300 rounded-lg shadow-sm text-sm text-gray-900 focus:ring-indigo-500 focus:border-indigo-500">
+            class="w-full rounded-lg border border-black/10 shadow-sm text-sm text-gray-900 focus:border-[#4CAF50] focus:ring-[#4CAF50]">
         @error('selling_price') <p class="text-xs text-red-600 mt-1">{{ $message }}</p> @enderror
     </div>
 
     <div>
         <label class="block text-sm font-medium text-gray-700 mb-1">Unit <span class="text-red-500">*</span></label>
         <input type="text" name="unit" value="{{ old('unit', $p?->unit ?? 'pcs') }}"
-            class="w-full border-gray-300 rounded-lg shadow-sm text-sm text-gray-900 focus:ring-indigo-500 focus:border-indigo-500">
+            class="w-full rounded-lg border border-black/10 shadow-sm text-sm text-gray-900 focus:border-[#4CAF50] focus:ring-[#4CAF50]">
         @error('unit') <p class="text-xs text-red-600 mt-1">{{ $message }}</p> @enderror
     </div>
 
     <div>
         <label class="block text-sm font-medium text-gray-700 mb-1">Status <span class="text-red-500">*</span></label>
-        <select name="status" class="w-full border-gray-300 rounded-lg shadow-sm text-sm text-gray-900 focus:ring-indigo-500 focus:border-indigo-500">
+        <select name="status" class="w-full rounded-lg border border-black/10 shadow-sm text-sm text-gray-900 focus:border-[#4CAF50] focus:ring-[#4CAF50]">
             @foreach (['active', 'inactive', 'draft', 'archived'] as $s)
                 <option value="{{ $s }}" @selected(old('status', $p?->status ?? 'active') === $s)>{{ ucfirst($s) }}</option>
             @endforeach
@@ -109,28 +109,28 @@
     <div>
         <label class="block text-sm font-medium text-gray-700 mb-1">Current Stock <span class="text-red-500">*</span></label>
         <input type="number" name="current_stock" value="{{ old('current_stock', $p?->current_stock ?? 0) }}" min="0"
-            class="w-full border-gray-300 rounded-lg shadow-sm text-sm text-gray-900 focus:ring-indigo-500 focus:border-indigo-500">
+            class="w-full rounded-lg border border-black/10 shadow-sm text-sm text-gray-900 focus:border-[#4CAF50] focus:ring-[#4CAF50]">
         @error('current_stock') <p class="text-xs text-red-600 mt-1">{{ $message }}</p> @enderror
     </div>
 
     <div>
         <label class="block text-sm font-medium text-gray-700 mb-1">Min Stock <span class="text-red-500">*</span></label>
         <input type="number" name="min_stock" value="{{ old('min_stock', $p?->min_stock ?? 0) }}" min="0"
-            class="w-full border-gray-300 rounded-lg shadow-sm text-sm text-gray-900 focus:ring-indigo-500 focus:border-indigo-500">
+            class="w-full rounded-lg border border-black/10 shadow-sm text-sm text-gray-900 focus:border-[#4CAF50] focus:ring-[#4CAF50]">
         @error('min_stock') <p class="text-xs text-red-600 mt-1">{{ $message }}</p> @enderror
     </div>
 
     <div>
         <label class="block text-sm font-medium text-gray-700 mb-1">Max Stock</label>
         <input type="number" name="max_stock" value="{{ old('max_stock', $p?->max_stock) }}" min="0"
-            class="w-full border-gray-300 rounded-lg shadow-sm text-sm text-gray-900 focus:ring-indigo-500 focus:border-indigo-500">
+            class="w-full rounded-lg border border-black/10 shadow-sm text-sm text-gray-900 focus:border-[#4CAF50] focus:ring-[#4CAF50]">
         @error('max_stock') <p class="text-xs text-red-600 mt-1">{{ $message }}</p> @enderror
     </div>
 
     <div>
         <label class="block text-sm font-medium text-gray-700 mb-1">Warehouse</label>
         <input type="text" name="warehouse" value="{{ old('warehouse', $p?->warehouse) }}"
-            class="w-full border-gray-300 rounded-lg shadow-sm text-sm text-gray-900 focus:ring-indigo-500 focus:border-indigo-500">
+            class="w-full rounded-lg border border-black/10 shadow-sm text-sm text-gray-900 focus:border-[#4CAF50] focus:ring-[#4CAF50]">
         @error('warehouse') <p class="text-xs text-red-600 mt-1">{{ $message }}</p> @enderror
     </div>
 </div>
@@ -138,7 +138,7 @@
 <div>
     <label class="block text-sm font-medium text-gray-700 mb-1">Description</label>
     <textarea name="description" rows="2"
-        class="w-full border-gray-300 rounded-lg shadow-sm text-sm text-gray-900 focus:ring-indigo-500 focus:border-indigo-500">{{ old('description', $p?->description) }}</textarea>
+        class="w-full rounded-lg border border-black/10 shadow-sm text-sm text-gray-900 focus:border-[#4CAF50] focus:ring-[#4CAF50]">{{ old('description', $p?->description) }}</textarea>
     @error('description') <p class="text-xs text-red-600 mt-1">{{ $message }}</p> @enderror
 </div>
 
@@ -169,7 +169,7 @@
 
         if (!categoryId && !brand) {
             previewEl.textContent = 'Select category & brand to preview';
-            previewEl.className = 'text-sm font-mono text-indigo-400 italic';
+            previewEl.className = 'text-sm font-mono text-[#4f8a3d] italic';
             return;
         }
 
@@ -182,7 +182,7 @@
             .then(r => r.json())
             .then(data => {
                 previewEl.textContent = data.preview;
-                previewEl.className = 'text-sm font-mono font-semibold text-indigo-600';
+                previewEl.className = 'text-sm font-mono font-semibold text-[#2f7b35]';
             });
         }, 300);
     }

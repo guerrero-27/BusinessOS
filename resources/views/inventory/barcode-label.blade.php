@@ -17,7 +17,7 @@
         .barcode-svg svg { width: 100%; height: auto; }
         .actions { margin-top: 20px; display: flex; gap: 10px; justify-content: center; }
         .btn { padding: 8px 20px; border-radius: 8px; font-size: 13px; font-family: sans-serif; cursor: pointer; border: none; font-weight: 500; }
-        .btn-print { background: #4f46e5; color: white; }
+        .btn-print { background: #111111; color: white; }
         .btn-back { background: #f3f4f6; color: #374151; text-decoration: none; display: inline-flex; align-items: center; }
         @media print {
             body { background: white; }

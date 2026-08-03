@@ -19,25 +19,25 @@
         $typeColors = [
             'in'         => 'bg-green-50 text-green-700 border-green-200',
             'out'        => 'bg-red-50 text-red-700 border-red-200',
-            'adjustment' => 'bg-blue-50 text-blue-700 border-blue-200',
+            'adjustment' => 'bg-gray-100 text-gray-700 border-gray-200',
         ];
     @endphp
 
     {{-- Stats --}}
     <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6">
-        <div class="bg-white border border-gray-200 rounded-lg p-4 shadow-sm">
+        <div class="rounded-2xl border border-black/10 bg-white p-4 shadow-sm">
             <p class="text-xs text-gray-500 uppercase tracking-wide">Total Products</p>
             <p class="text-2xl font-semibold text-gray-800 mt-1">{{ $totalProducts }}</p>
         </div>
-        <div class="bg-white border border-gray-200 rounded-lg p-4 shadow-sm">
+        <div class="rounded-2xl border border-black/10 bg-white p-4 shadow-sm">
             <p class="text-xs text-gray-500 uppercase tracking-wide">In Stock</p>
             <p class="text-2xl font-semibold text-green-600 mt-1">{{ $inStockCount }}</p>
         </div>
-        <div class="bg-white border border-gray-200 rounded-lg p-4 shadow-sm">
+        <div class="rounded-2xl border border-black/10 bg-white p-4 shadow-sm">
             <p class="text-xs text-gray-500 uppercase tracking-wide">Low Stock</p>
             <p class="text-2xl font-semibold text-yellow-600 mt-1">{{ $lowStockCount }}</p>
         </div>
-        <div class="bg-white border border-gray-200 rounded-lg p-4 shadow-sm">
+        <div class="rounded-2xl border border-black/10 bg-white p-4 shadow-sm">
             <p class="text-xs text-gray-500 uppercase tracking-wide">Out of Stock</p>
             <p class="text-2xl font-semibold text-red-600 mt-1">{{ $outOfStockCount }}</p>
         </div>
@@ -46,39 +46,39 @@
     {{-- Stock Overview --}}
     <div class="mb-8">
         <div class="mb-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-            <h2 class="text-base font-semibold text-gray-800">Stock Overview</h2>
+            <h2 class="text-base font-semibold text-[#111111]">Stock Overview</h2>
             <div class="flex flex-wrap gap-2 items-center">
                 <form action="{{ route('inventory.index') }}" method="GET" class="flex flex-wrap gap-2">
                     <input type="text" name="search" value="{{ request('search') }}" placeholder="Name or SKU..."
-                        class="w-full sm:w-40 border-gray-300 rounded-lg shadow-sm text-sm focus:ring-indigo-500 focus:border-indigo-500">
-                    <select name="category" class="w-full sm:w-auto border-gray-300 rounded-lg shadow-sm text-sm focus:ring-indigo-500 focus:border-indigo-500">
+                        class="w-full sm:w-40 rounded-lg border border-black/10 shadow-sm text-sm focus:border-[#4CAF50] focus:ring-[#4CAF50]">
+                    <select name="category" class="w-full sm:w-auto rounded-lg border border-black/10 shadow-sm text-sm focus:border-[#4CAF50] focus:ring-[#4CAF50]">
                         <option value="">All Categories</option>
                         @foreach ($categories as $cat)
                             <option value="{{ $cat->id }}" @selected(request('category') == $cat->id)>{{ $cat->name }}</option>
                         @endforeach
                     </select>
-                    <select name="stock_status" class="w-full sm:w-auto border-gray-300 rounded-lg shadow-sm text-sm focus:ring-indigo-500 focus:border-indigo-500">
+                    <select name="stock_status" class="w-full sm:w-auto rounded-lg border border-black/10 shadow-sm text-sm focus:border-[#4CAF50] focus:ring-[#4CAF50]">
                         <option value="">All Stock</option>
                         <option value="in_stock" @selected(request('stock_status') === 'in_stock')>In Stock</option>
                         <option value="low_stock" @selected(request('stock_status') === 'low_stock')>Low Stock</option>
                         <option value="out_of_stock" @selected(request('stock_status') === 'out_of_stock')>Out of Stock</option>
                     </select>
-                    <button type="submit" class="px-3 py-2 bg-gray-100 border border-gray-300 rounded-lg text-sm text-gray-700 hover:bg-gray-200 transition">Filter</button>
+                    <button type="submit" class="rounded-lg border border-black/10 bg-white px-3 py-2 text-sm text-gray-700 transition hover:bg-[#F4F5F7]">Filter</button>
                     @if (request()->hasAny(['search', 'category', 'stock_status']))
                         <a href="{{ route('inventory.index') }}" class="px-3 py-2 text-sm text-gray-500 hover:text-gray-700">Clear</a>
                     @endif
                 </form>
                 <button onclick="document.getElementById('modal-adjust').classList.remove('hidden')"
-                    class="inline-flex items-center gap-1 bg-indigo-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-indigo-700 transition whitespace-nowrap">
+                    class="inline-flex items-center gap-1 rounded-lg border border-[#111111] bg-[#111111] px-4 py-2 text-sm font-medium text-white transition hover:bg-black whitespace-nowrap">
                     + Adjust Stock
                 </button>
             </div>
         </div>
 
-        <div class="bg-white border border-gray-200 rounded-lg shadow-sm overflow-hidden">
+        <div class="overflow-hidden rounded-2xl border border-black/10 bg-white shadow-sm">
             <div class="hidden sm:block overflow-x-auto">
                 <table class="w-full text-sm text-left">
-                    <thead class="bg-gray-50 border-b border-gray-200 text-gray-500 uppercase text-xs tracking-wide">
+                    <thead class="bg-[#F4F5F7] border-b border-black/10 text-[#6B7280] uppercase text-xs tracking-wide">
                         <tr>
                             <th class="px-5 py-3">Product</th>
                             <th class="px-5 py-3">SKU</th>
@@ -93,7 +93,7 @@
                     <tbody class="divide-y divide-gray-100">
                         @forelse ($products as $product)
                             @php $ss = $product->stockStatusLabel(); @endphp
-                            <tr class="hover:bg-gray-50 transition">
+                            <tr class="transition hover:bg-[#F4F5F7]">
                                 <td class="px-5 py-3 font-medium text-gray-800">{{ $product->name }}</td>
                                 <td class="px-5 py-3 text-gray-400 font-mono text-xs">{{ $product->sku }}</td>
                                 <td class="px-5 py-3 text-gray-500">{{ $product->category?->name ?? '—' }}</td>
@@ -115,7 +115,7 @@
                                         <a href="{{ route('inventory.barcode', $product) }}" target="_blank"
                                             class="text-gray-400 hover:text-gray-600 text-sm font-medium">Label</a>
                                         <button onclick="openAdjust({{ $product->id }}, '{{ addslashes($product->name) }}', {{ $product->current_stock }})"
-                                            class="text-indigo-600 hover:text-indigo-800 text-sm font-medium">Adjust</button>
+                                            class="text-[#2f7b35] hover:text-[#1f5a25] text-sm font-medium">Adjust</button>
                                     </div>
                                 </td>
                             </tr>
@@ -153,7 +153,7 @@
                                     Label
                                 </a>
                                 <button onclick="openAdjust({{ $product->id }}, '{{ addslashes($product->name) }}', {{ $product->current_stock }})"
-                                    class="inline-flex items-center rounded-md border border-indigo-200 bg-indigo-50 px-2 py-1 text-xs font-medium text-indigo-700">
+                                    class="inline-flex items-center rounded-md border border-[#BFE7AF] bg-[#EAF8E5] px-2 py-1 text-xs font-medium text-[#2f7b35]">
                                     Adjust
                                 </button>
                             </div>
@@ -173,7 +173,7 @@
     {{-- Movement History --}}
     <div>
         <div class="mb-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-            <h2 class="text-base font-semibold text-gray-800">Movement History</h2>
+            <h2 class="text-base font-semibold text-[#111111]">Movement History</h2>
             <form action="{{ route('inventory.index') }}" method="GET" class="flex flex-wrap gap-2">
                 @foreach (['search', 'category', 'stock_status'] as $f)
                     @if (request($f))
@@ -181,24 +181,24 @@
                     @endif
                 @endforeach
                 <input type="text" name="ref_search" value="{{ request('ref_search') }}" placeholder="Search ref # (e.g. PO-2026-0001)"
-                    class="w-full sm:w-52 border-gray-300 rounded-lg shadow-sm text-sm text-gray-900 focus:ring-indigo-500 focus:border-indigo-500">
-                <select name="movement_type" class="w-full sm:w-auto border-gray-300 rounded-lg shadow-sm text-sm focus:ring-indigo-500 focus:border-indigo-500">
+                    class="w-full sm:w-52 rounded-lg border border-black/10 shadow-sm text-sm text-gray-900 focus:border-[#4CAF50] focus:ring-[#4CAF50]">
+                <select name="movement_type" class="w-full sm:w-auto rounded-lg border border-black/10 shadow-sm text-sm focus:border-[#4CAF50] focus:ring-[#4CAF50]">
                     <option value="">All Types</option>
                     <option value="in" @selected(request('movement_type') === 'in')>Stock In</option>
                     <option value="out" @selected(request('movement_type') === 'out')>Stock Out</option>
                     <option value="adjustment" @selected(request('movement_type') === 'adjustment')>Adjustment</option>
                 </select>
-                <button type="submit" class="px-3 py-2 bg-gray-100 border border-gray-300 rounded-lg text-sm text-gray-700 hover:bg-gray-200 transition">Filter</button>
+                <button type="submit" class="rounded-lg border border-black/10 bg-white px-3 py-2 text-sm text-gray-700 transition hover:bg-[#F4F5F7]">Filter</button>
                 @if (request()->hasAny(['ref_search', 'movement_type']))
                     <a href="{{ route('inventory.index') }}" class="px-3 py-2 text-sm text-gray-500 hover:text-gray-700">Clear</a>
                 @endif
             </form>
         </div>
 
-        <div class="bg-white border border-gray-200 rounded-lg shadow-sm overflow-hidden">
+        <div class="overflow-hidden rounded-2xl border border-black/10 bg-white shadow-sm">
             <div class="hidden sm:block overflow-x-auto">
                 <table class="w-full text-sm text-left">
-                    <thead class="bg-gray-50 border-b border-gray-200 text-gray-500 uppercase text-xs tracking-wide">
+                    <thead class="bg-[#F4F5F7] border-b border-black/10 text-[#6B7280] uppercase text-xs tracking-wide">
                         <tr>
                             <th class="px-5 py-3">Date</th>
                             <th class="px-5 py-3">Product</th>
@@ -213,7 +213,7 @@
                     <tbody class="divide-y divide-gray-100">
                         @forelse ($movements as $m)
                             @php $movementReference = $m->reference_number ?? $m->reference; @endphp
-                            <tr class="hover:bg-gray-50 transition align-top">
+                            <tr class="transition hover:bg-[#F4F5F7] align-top">
                                 <td class="px-5 py-3 text-gray-400 text-xs whitespace-nowrap">{{ $m->created_at->format('M d, Y H:i') }}</td>
                                 <td class="px-5 py-3 min-w-[220px]">
                                     <div class="font-medium text-gray-800 break-words">{{ $m->product?->name ?? 'Deleted product' }}</div>
@@ -234,7 +234,7 @@
                                 <td class="px-5 py-3">
                                     @if (!empty($movementReference))
                                         <span class="inline-flex font-mono text-xs px-2.5 py-1 rounded-full border
-                                            {{ str_starts_with($movementReference, 'PO') ? 'bg-green-50 text-green-700 border-green-200' : (str_starts_with($movementReference, 'INV') ? 'bg-red-50 text-red-700 border-red-200' : 'bg-blue-50 text-blue-700 border-blue-200') }}">
+                                            {{ str_starts_with($movementReference, 'PO') ? 'bg-green-50 text-green-700 border-green-200' : (str_starts_with($movementReference, 'INV') ? 'bg-red-50 text-red-700 border-red-200' : 'bg-gray-100 text-gray-700 border-gray-200') }}">
                                             {{ $movementReference }}
                                         </span>
                                     @else
@@ -279,7 +279,7 @@
                                     <p class="text-xs text-gray-400">{{ $m->stock_before }} → {{ $m->stock_after }}</p>
                                 </div>
                                 @if (!empty($movementReference))
-                                    <span class="inline-flex font-mono text-[11px] px-2 py-1 rounded-full border {{ str_starts_with($movementReference, 'PO') ? 'bg-green-50 text-green-700 border-green-200' : (str_starts_with($movementReference, 'INV') ? 'bg-red-50 text-red-700 border-red-200' : 'bg-blue-50 text-blue-700 border-blue-200') }}">
+                                    <span class="inline-flex font-mono text-[11px] px-2 py-1 rounded-full border {{ str_starts_with($movementReference, 'PO') ? 'bg-green-50 text-green-700 border-green-200' : (str_starts_with($movementReference, 'INV') ? 'bg-red-50 text-red-700 border-red-200' : 'bg-gray-100 text-gray-700 border-gray-200') }}">
                                         {{ $movementReference }}
                                     </span>
                                 @endif
@@ -318,7 +318,7 @@
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">Product <span class="text-red-500">*</span></label>
                     <select name="product_id" id="adj-product" onchange="updateCurrentStock()"
-                        class="w-full border-gray-300 rounded-lg shadow-sm text-sm focus:ring-indigo-500 focus:border-indigo-500">
+                        class="w-full rounded-lg border border-black/10 shadow-sm text-sm focus:border-[#4CAF50] focus:ring-[#4CAF50]">
                         <option value="">— Select Product —</option>
                         @foreach ($allProducts as $p)
                             <option value="{{ $p->id }}" data-stock="{{ $p->current_stock }}" data-unit="{{ $p->unit }}">
@@ -337,7 +337,7 @@
                     <label class="block text-sm font-medium text-gray-700 mb-1">Type <span class="text-red-500">*</span></label>
                     <div class="grid grid-cols-3 gap-2">
                         @foreach (['in' => 'Stock In', 'out' => 'Stock Out', 'adjustment' => 'Adjustment'] as $val => $label)
-                            <label class="flex items-center justify-center gap-1.5 border rounded-lg px-3 py-2 cursor-pointer text-sm has-[:checked]:border-indigo-500 has-[:checked]:bg-indigo-50 has-[:checked]:text-indigo-700 text-gray-600 hover:bg-gray-50 transition">
+                            <label class="flex items-center justify-center gap-1.5 border rounded-lg px-3 py-2 cursor-pointer text-sm has-[:checked]:border-[#4CAF50] has-[:checked]:bg-[#EAF8E5] has-[:checked]:text-[#2f7b35] text-gray-600 hover:bg-gray-50 transition">
                                 <input type="radio" name="type" value="{{ $val }}" class="sr-only" @checked(old('type', 'in') === $val)>
                                 {{ $label }}
                             </label>
@@ -349,7 +349,7 @@
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">Quantity <span class="text-red-500">*</span></label>
                     <input type="number" name="quantity" value="{{ old('quantity') }}" min="1"
-                        class="w-full border-gray-300 rounded-lg shadow-sm text-sm focus:ring-indigo-500 focus:border-indigo-500">
+                        class="w-full rounded-lg border border-black/10 shadow-sm text-sm focus:border-[#4CAF50] focus:ring-[#4CAF50]">
                     <p class="text-xs text-gray-400 mt-1">For <em>Adjustment</em>, enter the new absolute stock value.</p>
                     @error('quantity') <p class="text-xs text-red-600 mt-1">{{ $message }}</p> @enderror
                 </div>
@@ -367,13 +367,13 @@
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">Reason</label>
                     <input type="text" name="reason" value="{{ old('reason') }}" placeholder="e.g. Purchase delivery, Damaged goods..."
-                        class="w-full border-gray-300 rounded-lg shadow-sm text-sm text-gray-900 focus:ring-indigo-500 focus:border-indigo-500">
+                        class="w-full rounded-lg border border-black/10 shadow-sm text-sm text-gray-900 focus:border-[#4CAF50] focus:ring-[#4CAF50]">
                     @error('reason') <p class="text-xs text-red-600 mt-1">{{ $message }}</p> @enderror
                 </div>
 
                 <div class="flex justify-end gap-3 pt-2 border-t border-gray-100">
                     <button type="button" onclick="closeAdjust()" class="px-4 py-2 text-sm text-gray-600 hover:text-gray-800 transition">Cancel</button>
-                    <button type="submit" class="bg-indigo-600 text-white px-5 py-2 rounded-lg text-sm font-medium hover:bg-indigo-700 transition">
+                    <button type="submit" class="rounded-lg border border-[#111111] bg-[#111111] px-5 py-2 text-sm font-medium text-white transition hover:bg-black">
                         Save
                     </button>
                 </div>
