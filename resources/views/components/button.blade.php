@@ -1,5 +1,5 @@
 <button {{ $attributes->merge([
-        'class'=> 'inline-flex items-center rounded-lg bg--indigo-600 px-4 py-2 font-medium text-white transition hover:bg:indigo-700'
+    'class'=> 'inline-flex items-center rounded-lg bg-[#111111] px-4 py-2 font-medium text-white transition hover:bg-black focus:outline-none focus:ring-2 focus:ring-[#4CAF50] focus:ring-offset-2'
     ])}}
 >
 
