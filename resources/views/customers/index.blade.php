@@ -6,7 +6,7 @@
     @endif
 
     <div class="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-        <h1 class="text-xl font-semibold text-gray-800">Customers</h1>
+        <h1 class="text-xl font-semibold text-[#111111]">Customers</h1>
 
         <div class="flex flex-col gap-2 sm:flex-row sm:items-center">
             <form action="{{ route('customers.index') }}" method="GET" class="flex gap-2">
@@ -15,24 +15,24 @@
                     name="search"
                     value="{{ request('search') }}"
                     placeholder="Search by name..."
-                    class="w-full sm:w-56 border-gray-300 rounded-lg shadow-sm text-sm focus:ring-indigo-500 focus:border-indigo-500"
+                    class="w-full sm:w-56 rounded-lg border border-black/10 shadow-sm text-sm focus:border-[#4CAF50] focus:ring-[#4CAF50]"
                 >
-                <button type="submit" class="px-3 py-2 bg-gray-100 border border-gray-300 rounded-lg text-sm text-gray-700 hover:bg-gray-200 transition whitespace-nowrap">
+                <button type="submit" class="px-3 py-2 bg-white border border-black/10 rounded-lg text-sm text-gray-700 hover:bg-[#F4F5F7] transition whitespace-nowrap">
                     Search
                 </button>
             </form>
 
-            <a href="{{ route('customers.create') }}" class="inline-flex items-center justify-center gap-1 bg-indigo-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-indigo-700 transition whitespace-nowrap">
+            <a href="{{ route('customers.create') }}" class="inline-flex items-center justify-center gap-1 rounded-lg border border-[#111111] bg-[#111111] px-4 py-2 text-sm font-medium text-white transition hover:bg-black whitespace-nowrap">
                 + Add Customer
             </a>
         </div>
     </div>
 
-    <div class="bg-white border border-gray-200 rounded-lg shadow-sm overflow-hidden">
+    <div class="overflow-hidden rounded-2xl border border-black/10 bg-white shadow-sm">
         {{-- Desktop table --}}
         <div class="hidden sm:block overflow-x-auto">
             <table class="w-full text-sm text-left">
-                <thead class="bg-gray-50 border-b border-gray-200 text-gray-500 uppercase text-xs tracking-wide">
+                <thead class="bg-[#F4F5F7] border-b border-black/10 text-[#6B7280] uppercase text-xs tracking-wide">
                     <tr>
                         <th class="px-5 py-3">#</th>
                         <th class="px-5 py-3">Name</th>
@@ -44,7 +44,7 @@
                 </thead>
                 <tbody class="divide-y divide-gray-100">
                     @forelse ($customers as $customer)
-                        <tr class="hover:bg-gray-50 transition">
+                        <tr class="transition hover:bg-[#F4F5F7]">
                             <td class="px-5 py-3 text-gray-400">{{ $loop->iteration }}</td>
                             <td class="px-5 py-3 font-medium text-gray-800">{{ $customer->first_name }} {{ $customer->last_name }}</td>
                             <td class="px-5 py-3 text-gray-600">{{ $customer->email }}</td>
@@ -58,7 +58,7 @@
                             </td>
                             <td class="px-5 py-3 text-right">
                                 <div class="flex justify-end items-center gap-3">
-                                    <a href="{{ route('customers.edit', $customer) }}" class="text-indigo-600 hover:text-indigo-800 text-sm font-medium">Edit</a>
+                                    <a href="{{ route('customers.edit', $customer) }}" class="text-[#2f7b35] hover:text-[#1f5a25] text-sm font-medium">Edit</a>
                                     <form action="{{ route('customers.destroy', $customer) }}" method="POST" onsubmit="return confirm('Remove this customer?');" class="inline">
                                         @csrf
                                         @method('DELETE')
@@ -71,7 +71,7 @@
                         <tr>
                             <td colspan="6" class="text-center text-gray-400 py-10 text-sm">
                                 No customers found.
-                                <a href="{{ route('customers.create') }}" class="text-indigo-600 hover:underline ml-1">Add one</a>
+                                <a href="{{ route('customers.create') }}" class="text-[#2f7b35] hover:underline ml-1">Add one</a>
                             </td>
                         </tr>
                     @endforelse
@@ -100,7 +100,7 @@
                         </div>
                     </div>
                     <div class="flex gap-4 mt-3">
-                        <a href="{{ route('customers.edit', $customer) }}" class="text-indigo-600 text-sm font-medium">Edit</a>
+                        <a href="{{ route('customers.edit', $customer) }}" class="text-[#2f7b35] hover:text-[#1f5a25] text-sm font-medium">Edit</a>
                         <form action="{{ route('customers.destroy', $customer) }}" method="POST" onsubmit="return confirm('Remove this customer?');" class="inline">
                             @csrf
                             @method('DELETE')
@@ -111,7 +111,7 @@
             @empty
                 <div class="text-center text-gray-400 py-10 text-sm">
                     No customers found.
-                    <a href="{{ route('customers.create') }}" class="text-indigo-600 hover:underline ml-1">Add one</a>
+                    <a href="{{ route('customers.create') }}" class="text-[#2f7b35] hover:underline ml-1">Add one</a>
                 </div>
             @endforelse
         </div>
